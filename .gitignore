@@ -2,3 +2,4 @@
 *.npz
 *.joblib
 .env/
+__pycache__/
