@@ -8,6 +8,6 @@ class Character:
         self.filename = filename
         self.img_arr = self._read_image(filename)
 
-    def _read_image(filename: str) -> np.ndarray(dtype=np.int32):
+    def _read_image(self, filename: str) -> np.ndarray(shape=(32, 32), dtype=np.int32):
         pil_img = Image.open(filename, "r")
         return np.array(pil_img, dtype=np.int32)
