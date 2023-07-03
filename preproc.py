@@ -15,19 +15,13 @@ def get_hog_desc(X):
     X_aux = X.reshape(32, 32)
 
     # return the HOG descriptor of the image
-    fd, image = hog(
+    return hog(
         X_aux,
         orientations=8,
         pixels_per_cell=(8, 8),
         cells_per_block=(1, 1),
         block_norm="L2-Hys",
-        visualize=True,
     )
-
-    plt.imshow(image, cmap="gray")
-    plt.show()
-
-    return fd
 
 
 def transform_input(arr):
