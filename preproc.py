@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 from skimage.feature import hog
 
 BYTE_SIZE = 255
@@ -14,13 +15,19 @@ def get_hog_desc(X):
     X_aux = X.reshape(32, 32)
 
     # return the HOG descriptor of the image
-    return hog(
+    fd, image = hog(
         X_aux,
-        orientations=4,
+        orientations=8,
         pixels_per_cell=(8, 8),
         cells_per_block=(1, 1),
         block_norm="L2-Hys",
+        visualize=True,
     )
+
+    plt.imshow(image, cmap="gray")
+    plt.show()
+
+    return fd
 
 
 def transform_input(arr):
