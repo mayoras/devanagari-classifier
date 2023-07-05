@@ -29,7 +29,7 @@ def min_max_scaling(X, min_vals=None, max_vals=None):
 
 def get_hog_desc(X):
     # is a single image
-    if len(X.shape) < 2:
+    if X.shape[0] == 1:
         # reconvert feature vector in a matrix (image)
         X_aux = X.reshape(32, 32)
 
