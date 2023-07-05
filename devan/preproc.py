@@ -1,8 +1,6 @@
 import numpy as np
 from skimage.feature import hog
 
-from devan.character import Character
-
 BYTE_SIZE = 255
 
 
