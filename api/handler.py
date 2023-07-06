@@ -6,7 +6,7 @@ from os import path
 
 
 """
-Simple HTTP Web Handler as the Gateway to the module
+Simple HTTP Web Handler Gateway to the ML module
 """
 
 
