@@ -2,4 +2,4 @@
 
 set -xe
 
-$(which python3) $(pwd)/api/app.py
+$(which python3) $(pwd)/api/main.py
