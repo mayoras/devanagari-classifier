@@ -8,7 +8,9 @@ class Pipeline:
     # transformation === (func, {param1: p1, param2: p2})
     def __init__(self, chars: list[Character], trans: list[tuple[Callable, dict]] = []):
         # init prediction set and transformations
-        self.X = np.array([c.img_arr for c in chars], dtype=float)
+        self.X: np.ndarray[int, np.dtype[np.float64]] = np.array(
+            [c.img_arr for c in chars], dtype=np.float64
+        )
         self.trans = trans
 
     def add_transform(self, trans: tuple[Callable, dict]):
