@@ -1,2 +1,16 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	import Canvas from '$lib/components/Canvas.svelte';
+</script>
+
+<div class="container">
+	<Canvas resolution={{ width: 32, height: 32 }} />
+</div>
+
+<style>
+	.container {
+		display: flex;
+		height: 100vh;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
