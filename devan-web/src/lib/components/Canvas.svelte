@@ -46,11 +46,10 @@
 	on:pointerdown={startDrawing}
 	on:pointerup={stopDrawing}
 	on:pointermove={draw}
-	class="canvas"
 />
 
 <style>
-	.canvas {
+	canvas {
 		width: 30em;
 		height: 30em;
 		border-radius: 5px;
