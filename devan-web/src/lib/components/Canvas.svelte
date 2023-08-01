@@ -1,21 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { CANVAS_RESOLUTION_PROPS } from './types';
-
-	export let resolution: CANVAS_RESOLUTION_PROPS = {
-		width: 32,
-		height: 32
-	};
+	import type { CANVAS_DIMENSIONS_PROPS } from './types';
+	import { drawBlurredRect } from '$lib/draw';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
+	let isDrawing = false;
 
-	let drawing = false;
+	export let dims: CANVAS_DIMENSIONS_PROPS;
+
+	export function clear() {
+		ctx?.clearRect(0, 0, canvas.width, canvas.height);
+	}
 
 	onMount(() => {
-		// set resolution
-		canvas.width = resolution.width;
-		canvas.height = resolution.height;
+		// set dimensions
+		canvas.width = dims.width * dims.size;
+		canvas.height = dims.height * dims.size;
 
 		// get context
 		ctx = canvas.getContext('2d');
@@ -23,36 +24,55 @@
 		if (!ctx) {
 			throw new Error('Context 2d is null');
 		}
+
+		ctx.fillStyle = 'white';
+		ctx.strokeStyle = 'white';
+		ctx.lineWidth = dims.size;
 	});
 
 	// Canvas Handlers //
-	function startDrawing() {
-		drawing = true;
-		console.log('started drawing...');
+	function startDrawing(e: MouseEvent) {
+		const { offsetX, offsetY } = e;
+
+		isDrawing = true;
+		ctx?.beginPath();
+		ctx?.moveTo(offsetX, offsetY);
 	}
 
 	function stopDrawing() {
-		drawing = false;
-		console.log('stopped drawing...');
+		isDrawing = false;
+		ctx?.closePath();
 	}
 
-	function draw() {
-		if (drawing) console.log('drawing...');
+	function draw(e: MouseEvent) {
+		const { offsetX, offsetY } = e;
+
+		if (!isDrawing) {
+			return;
+		}
+
+		drawBlurredRect(ctx, offsetX, offsetY, dims.size * 2);
 	}
 </script>
 
-<canvas
-	bind:this={canvas}
-	on:pointerdown={startDrawing}
-	on:pointerup={stopDrawing}
-	on:pointermove={draw}
-/>
+<div>
+	<canvas
+		bind:this={canvas}
+		on:mousedown={startDrawing}
+		on:mouseup={stopDrawing}
+		on:mousemove={draw}
+	/>
+</div>
 
 <style>
 	canvas {
-		width: 30em;
-		height: 30em;
 		border-radius: 5px;
 		background-color: black;
+	}
+
+	div {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
