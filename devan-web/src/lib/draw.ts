@@ -4,7 +4,7 @@ export function drawBlurredRect(
 	y: number,
 	size: number
 ): void {
-	const numPasses = 5;
+	const numPasses = 3;
 	const blurIntensity = 10;
 
 	if (ctx) {
