@@ -51,8 +51,8 @@
 
 <style>
 	.canvas {
-		/* width: 30em;
-		height: 30em; */
+		width: 30em;
+		height: 30em;
 		border-radius: 5px;
 		background-color: black;
 	}
