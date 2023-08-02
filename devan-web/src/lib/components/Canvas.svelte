@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { CANVAS_DIMENSIONS_PROPS } from './types';
 	import { drawBlurredRect } from '$lib/draw';
+	import { exportToPNG } from '$lib/image';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
@@ -11,6 +12,10 @@
 
 	export function clear() {
 		ctx?.clearRect(0, 0, canvas.width, canvas.height);
+	}
+
+	export async function exportCanvas() {
+		return await exportToPNG(canvas);
 	}
 
 	onMount(() => {

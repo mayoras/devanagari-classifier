@@ -7,7 +7,16 @@
 <div class="container">
 	<div>
 		<Canvas bind:this={canvas} dims={{ width: 32, height: 32, size: 13 }} />
-		<button on:click={() => canvas.clear()}>Clear</button>
+		<div class="controls">
+			<button
+				type="button"
+				on:click={async () => {
+					const bitmap = await canvas.exportCanvas();
+					console.log(bitmap);
+				}}>Export</button
+			>
+			<button on:click={() => canvas.clear()}>Clear</button>
+		</div>
 	</div>
 </div>
 
@@ -19,9 +28,15 @@
 		align-items: center;
 	}
 
-	button {
+	.controls {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		margin-top: 2em;
-		width: 100%;
+	}
+
+	button {
+		width: 45%;
 		height: 3em;
 		font-size: large;
 		border: 2px solid purple;
