@@ -43,11 +43,14 @@
 		background: transparent;
 		cursor: pointer;
 		transition: 0.5s ease-out;
+		box-shadow: 0 0 3px 3px skyblue;
+		font-weight: bold;
+		color: purple;
 	}
 
 	button:hover {
-		background-color: aqua;
-		box-shadow: 0 0 5px 2px skyblue;
-		transition: 0.5s ease;
+		background-color: cyan;
+		box-shadow: 0 0 4px 4px skyblue;
+		transition: 0.5s linear;
 	}
 </style>

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import type { CANVAS_DIMENSIONS_PROPS } from './types';
 	import { drawBlurredRect } from '$lib/draw';
-	import { exportToPNG } from '$lib/image';
+	import { exportToImage } from '$lib/image';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
@@ -15,7 +15,7 @@
 	}
 
 	export async function exportCanvas() {
-		return await exportToPNG(canvas);
+		return await exportToImage(canvas);
 	}
 
 	onMount(() => {
@@ -36,7 +36,7 @@
 	});
 
 	// Canvas Handlers //
-	function startDrawing(e: MouseEvent) {
+	function startDrawing(e: PointerEvent) {
 		const { offsetX, offsetY } = e;
 
 		isDrawing = true;
@@ -49,7 +49,7 @@
 		ctx?.closePath();
 	}
 
-	function draw(e: MouseEvent) {
+	function draw(e: PointerEvent) {
 		const { offsetX, offsetY } = e;
 
 		if (!isDrawing) {
@@ -63,9 +63,9 @@
 <div>
 	<canvas
 		bind:this={canvas}
-		on:mousedown={startDrawing}
-		on:mouseup={stopDrawing}
-		on:mousemove={draw}
+		on:pointerdown={startDrawing}
+		on:pointerup={stopDrawing}
+		on:pointermove={draw}
 	/>
 </div>
 
@@ -73,6 +73,7 @@
 	canvas {
 		border-radius: 5px;
 		background-color: black;
+		box-shadow: 0 0 3px 3px black;
 	}
 
 	div {

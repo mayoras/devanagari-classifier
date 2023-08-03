@@ -1,4 +1,6 @@
-export async function exportToPNG(canvas: HTMLCanvasElement): Promise<ImageData | null> {
+import { Buffer } from 'buffer';
+
+export async function exportToImage(canvas: HTMLCanvasElement): Promise<string | null> {
 	if (isBlank(canvas)) {
 		console.log('WARNING: canvas is blank. Not exporting');
 	}
@@ -7,23 +9,36 @@ export async function exportToPNG(canvas: HTMLCanvasElement): Promise<ImageData 
 	const bitmap = await createImageBitmap(canvas, { resizeWidth: 32, resizeHeight: 32 });
 
 	// create a new canvas
-	const canvas_resized = document.createElement('canvas');
-	const ctx_resized = canvas_resized.getContext('2d');
+	const canvasResized = document.createElement('canvas');
+	const ctxResized = canvasResized.getContext('2d');
 
-	if (!ctx_resized) {
+	if (!ctxResized) {
 		throw new Error('Context 2d is null');
 	}
 
-	canvas_resized.width = bitmap.width;
-	canvas_resized.height = bitmap.height;
+	canvasResized.width = bitmap.width;
+	canvasResized.height = bitmap.height;
 
 	// paste bitmap to the new canvas
-	ctx_resized.drawImage(bitmap, 0, 0);
+	ctxResized.drawImage(bitmap, 0, 0);
 
 	// get the new ImageData object from the new canvas
-	const imageData = ctx_resized.getImageData(0, 0, canvas_resized.width, canvas_resized.height);
+	const imageData = ctxResized.getImageData(0, 0, canvasResized.width, canvasResized.height);
+	const bmp = toGrayScale(imageData.data).toString();
 
-	return imageData;
+	return Buffer.from(bmp, 'binary').toString('base64');
+}
+
+function toGrayScale(data: Uint8ClampedArray): Uint8ClampedArray {
+	const grayScaled = data;
+	for (let i = 0; i < grayScaled.length; i += 4) {
+		// make equalized gray scaling
+		grayScaled[i] /= 3;
+		grayScaled[i + 1] /= 3;
+		grayScaled[i + 2] /= 3;
+	}
+
+	return grayScaled;
 }
 
 function isBlank(canvas: HTMLCanvasElement): boolean {
