@@ -1,20 +1,49 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
+	import { DEVAN_API_URL } from '$lib/contants';
+	import type { ImagePayloadProps } from '../app';
 
 	let canvas: Canvas;
+
+	async function sendPayload(payload: ImagePayloadProps) {
+		try {
+			const response = await fetch(DEVAN_API_URL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(payload)
+			});
+			return response.json();
+		} catch (e) {
+			console.error('Error on FETCH: ', e);
+			return null;
+		}
+	}
+
+	async function handleExport() {
+		const bitmapEncoded = await canvas.exportCanvas();
+
+		if (!bitmapEncoded) {
+			throw new Error('image could not be encoded (null).');
+		}
+
+		const payload: ImagePayloadProps = {
+			file: 'image',
+			colortype: 'gray',
+			alpha: true,
+			data: bitmapEncoded
+		};
+
+		sendPayload(payload);
+	}
 </script>
 
 <div class="container">
 	<div>
 		<Canvas bind:this={canvas} dims={{ width: 32, height: 32, size: 13 }} />
 		<div class="controls">
-			<button
-				type="button"
-				on:click={async () => {
-					const bitmap = await canvas.exportCanvas();
-					console.log(bitmap);
-				}}>Export</button
-			>
+			<button type="button" on:click={handleExport}>Export</button>
 			<button on:click={() => canvas.clear()}>Clear</button>
 		</div>
 	</div>

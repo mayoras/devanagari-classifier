@@ -9,4 +9,11 @@ declare global {
 	}
 }
 
+export interface ImagePayloadProps {
+	file: string;
+	colortype: 'gray' | 'rgb';
+	alpha?: boolean;
+	data: string;
+}
+
 export {};
