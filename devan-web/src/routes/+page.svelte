@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
-	import { DEVAN_API_URL } from '$lib/contants';
+	import { DEVAN_API_URL } from '$lib/constants';
 
 	type ImagePayloadProps = devan.image.ImagePayloadProps;
 
