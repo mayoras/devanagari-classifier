@@ -37,9 +37,11 @@
 		const payload = {
 			file: 'image',
 			mode: 'gray',
-			alpha: true,
+			alpha: false,
 			data: bitmapEncoded
 		} satisfies ImagePayloadProps;
+
+		console.log(payload);
 
 		sendPayload(payload);
 	}

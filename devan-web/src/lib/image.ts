@@ -1,4 +1,11 @@
 import { Buffer } from 'buffer';
+import {
+	IMG_WIDTH,
+	IMG_HEIGHT,
+	RED_GRAY_PROPORTION,
+	GREEN_GRAY_PROPORTION,
+	BLUE_GRAY_PROPORTION
+} from './constants';
 
 export async function exportToImage(canvas: HTMLCanvasElement): Promise<string | null> {
 	if (isBlank(canvas)) {
@@ -6,7 +13,10 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	}
 
 	// create a new bitmap resized to 32x32 resolution
-	const bitmap = await createImageBitmap(canvas, { resizeWidth: 32, resizeHeight: 32 });
+	const bitmap = await createImageBitmap(canvas, {
+		resizeWidth: IMG_WIDTH,
+		resizeHeight: IMG_HEIGHT
+	});
 
 	// create a new canvas
 	const canvasResized = document.createElement('canvas');
@@ -29,13 +39,19 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	return Buffer.from(bmp, 'binary').toString('base64');
 }
 
-function toGrayScale(data: Uint8ClampedArray): Uint8ClampedArray {
-	const grayScaled = data;
-	for (let i = 0; i < grayScaled.length; i += 4) {
-		// make equalized gray scaling
-		grayScaled[i] /= 3;
-		grayScaled[i + 1] /= 3;
-		grayScaled[i + 2] /= 3;
+function toGrayScale(data: Uint8ClampedArray): Uint8Array {
+	const grayScaled = new Uint8Array(IMG_WIDTH * IMG_HEIGHT);
+
+	for (let i = 0; i < data.length; i += 4) {
+		const red = data[i];
+		const green = data[i + 1];
+		const blue = data[i + 2];
+
+		const grayValue =
+			(red * RED_GRAY_PROPORTION + green * GREEN_GRAY_PROPORTION + blue * BLUE_GRAY_PROPORTION) *
+			(255 / (RED_GRAY_PROPORTION + GREEN_GRAY_PROPORTION + BLUE_GRAY_PROPORTION));
+
+		grayScaled[i / 4] = grayValue;
 	}
 
 	return grayScaled;
