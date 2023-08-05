@@ -19,7 +19,7 @@
 
 			const json = await response.json();
 
-			return json;
+			console.log(json);
 		} catch (e) {
 			console.error('Error on FETCH:', e);
 			return null;
@@ -35,7 +35,7 @@
 
 		const payload: ImagePayloadProps = {
 			file: 'image',
-			colortype: 'gray',
+			mode: 'gray',
 			alpha: true,
 			data: bitmapEncoded
 		};
