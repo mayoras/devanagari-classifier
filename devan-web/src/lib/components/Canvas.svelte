@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Component } from '../../types';
 	import { drawBlurredRect } from '$lib/draw';
 	import { exportToImage } from '$lib/image';
 
@@ -8,7 +7,7 @@
 	let ctx: CanvasRenderingContext2D | null;
 	let isDrawing = false;
 
-	export let dims: Component.Canvas.IDimensions;
+	export let dims: devan.component.canvas.IDimensions;
 
 	export function clear() {
 		ctx?.clearRect(0, 0, canvas.width, canvas.height);
