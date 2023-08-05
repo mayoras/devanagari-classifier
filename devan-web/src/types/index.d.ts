@@ -9,7 +9,7 @@ declare namespace devan {
 	}
 	namespace component {
 		namespace canvas {
-			interface IDimensions {
+			interface Dimensions {
 				width: number;
 				height: number;
 				size: number;
