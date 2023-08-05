@@ -7,6 +7,13 @@ import {
 	BLUE_GRAY_PROPORTION
 } from '../constants/image';
 
+// TODO: fix resize strategy
+/**
+ * Exports the drawing contained in the canvas to the corresponding Base64 encoding of the image
+ * contained.
+ * @param canvas `canvas` HTML element containing the user drawing
+ * @returns a Promise for the Base64 encoded image
+ */
 export async function exportToImage(canvas: HTMLCanvasElement): Promise<string | null> {
 	if (isBlank(canvas)) {
 		console.log('WARNING: canvas is blank. Not exporting');
@@ -39,6 +46,11 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	return Buffer.from(bmp, 'binary').toString('base64');
 }
 
+/**
+ * Changes the mode of a canvas DOM element from RGBA to Gray-Scale.
+ * @param data byte array containing the RGBA pixel values from a canvas
+ * @returns byte array containing the gray (8-bit) pixel values from canvas
+ */
 export function toGrayScale(data: Uint8ClampedArray): Uint8Array {
 	const grayScaled = new Uint8Array(IMG_WIDTH * IMG_HEIGHT);
 
@@ -57,6 +69,11 @@ export function toGrayScale(data: Uint8ClampedArray): Uint8Array {
 	return grayScaled;
 }
 
+/**
+ * Checks if `canvas` DOM element is blank.
+ * @param canvas HTML Canvas element
+ * @returns `true` if canvas is blank (no drawing by the user), `false` otherwise
+ */
 export function isBlank(canvas: HTMLCanvasElement): boolean {
 	const ctx = canvas.getContext('2d');
 	if (!ctx) {
