@@ -27,5 +27,7 @@ module.exports = {
 			}
 		}
 	],
-	globals: { App: 'writable' }
+	globals: {
+		devan: 'writable'
+	}
 };
