@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
-	import { DEVAN_API_URL, IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants';
+	import { DEVAN_API_URL } from '$lib/constants/api';
+	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
 
 	type ImagePayloadProps = devan.image.ImagePayloadProps;
 

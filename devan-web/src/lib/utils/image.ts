@@ -5,7 +5,7 @@ import {
 	RED_GRAY_PROPORTION,
 	GREEN_GRAY_PROPORTION,
 	BLUE_GRAY_PROPORTION
-} from './constants';
+} from '../constants';
 
 export async function exportToImage(canvas: HTMLCanvasElement): Promise<string | null> {
 	if (isBlank(canvas)) {

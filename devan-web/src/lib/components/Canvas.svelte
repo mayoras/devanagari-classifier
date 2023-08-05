@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { drawBlurredRect } from '$lib/draw';
-	import { exportToImage } from '$lib/image';
+	import { drawBlurredRect } from '$lib/utils/draw';
+	import { exportToImage } from '$lib/utils/image';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
 	let isDrawing = false;
 
-	export let dims: devan.component.canvas.IDimensions;
+	export let dims: devan.component.canvas.Dimensions;
 
 	export function clear() {
 		ctx?.clearRect(0, 0, canvas.width, canvas.height);
@@ -55,7 +55,7 @@
 			return;
 		}
 
-		drawBlurredRect(ctx, offsetX, offsetY, dims.size * 2);
+		drawBlurredRect(ctx, offsetX, offsetY, dims.size);
 	}
 </script>
 
