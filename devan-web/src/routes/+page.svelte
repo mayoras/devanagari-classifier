@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
-	import { DEVAN_API_URL } from '$lib/constants';
+	import { DEVAN_API_URL, IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants';
 
 	type ImagePayloadProps = devan.image.ImagePayloadProps;
 
@@ -34,12 +34,12 @@
 			throw new Error('image could not be encoded (null).');
 		}
 
-		const payload: ImagePayloadProps = {
+		const payload = {
 			file: 'image',
 			mode: 'gray',
 			alpha: true,
 			data: bitmapEncoded
-		};
+		} satisfies ImagePayloadProps;
 
 		sendPayload(payload);
 	}
@@ -47,7 +47,10 @@
 
 <div class="container">
 	<div>
-		<Canvas bind:this={canvas} dims={{ width: 32, height: 32, size: 13 }} />
+		<Canvas
+			bind:this={canvas}
+			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
+		/>
 		<div class="controls">
 			<button type="button" on:click={handleExport}>Export</button>
 			<button on:click={() => canvas.clear()}>Clear</button>
