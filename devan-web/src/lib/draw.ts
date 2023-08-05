@@ -1,3 +1,4 @@
+// TODO: change this function to mimic the blurred effect without alpha values
 export function drawBlurredRect(
 	ctx: CanvasRenderingContext2D | null,
 	x: number,

@@ -3,6 +3,6 @@ from pydantic import BaseModel
 
 class ImageBody(BaseModel):
     file: str
-    colortype: str = "gray"
+    mode: str = "gray"
     alpha: bool = True
     data: str
