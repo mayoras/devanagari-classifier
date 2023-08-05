@@ -39,7 +39,7 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	return Buffer.from(bmp, 'binary').toString('base64');
 }
 
-function toGrayScale(data: Uint8ClampedArray): Uint8Array {
+export function toGrayScale(data: Uint8ClampedArray): Uint8Array {
 	const grayScaled = new Uint8Array(IMG_WIDTH * IMG_HEIGHT);
 
 	for (let i = 0; i < data.length; i += 4) {
@@ -57,7 +57,7 @@ function toGrayScale(data: Uint8ClampedArray): Uint8Array {
 	return grayScaled;
 }
 
-function isBlank(canvas: HTMLCanvasElement): boolean {
+export function isBlank(canvas: HTMLCanvasElement): boolean {
 	const ctx = canvas.getContext('2d');
 	if (!ctx) {
 		throw new Error('Context 2d is null');
