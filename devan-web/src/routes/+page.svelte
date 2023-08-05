@@ -1,11 +1,11 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
 	import { DEVAN_API_URL } from '$lib/contants';
-	import type { ImagePayloadProps } from '../app';
+	import type { Image } from '../types';
 
 	let canvas: Canvas;
 
-	async function sendPayload(payload: ImagePayloadProps) {
+	async function sendPayload(payload: Image.ImagePayloadProps) {
 		try {
 			const response = await fetch(DEVAN_API_URL, {
 				method: 'POST',
@@ -33,7 +33,7 @@
 			throw new Error('image could not be encoded (null).');
 		}
 
-		const payload: ImagePayloadProps = {
+		const payload: Image.ImagePayloadProps = {
 			file: 'image',
 			mode: 'gray',
 			alpha: true,
