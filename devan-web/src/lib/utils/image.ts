@@ -41,6 +41,7 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 
 	// get the new ImageData object from the new canvas
 	const imageData = ctxResized.getImageData(0, 0, canvasResized.width, canvasResized.height);
+
 	const bmp = toGrayScale(imageData.data).toString();
 
 	return Buffer.from(bmp, 'binary').toString('base64');
