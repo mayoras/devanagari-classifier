@@ -4,7 +4,8 @@ import {
 	IMG_HEIGHT,
 	RED_GRAY_PROPORTION,
 	GREEN_GRAY_PROPORTION,
-	BLUE_GRAY_PROPORTION
+	BLUE_GRAY_PROPORTION,
+	RGBA_PIXEL_SIZE
 } from '../constants/image';
 
 // TODO: fix resize strategy
@@ -53,18 +54,20 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
  * @returns byte array containing the gray (8-bit) pixel values from canvas
  */
 export function toGrayScale(data: Uint8ClampedArray): Uint8Array {
-	const grayScaled = new Uint8Array(IMG_WIDTH * IMG_HEIGHT);
+	const grayScaled = new Uint8Array(data.length / RGBA_PIXEL_SIZE);
 
-	for (let i = 0; i < data.length; i += 4) {
+	for (let i = 0; i < data.length; i += RGBA_PIXEL_SIZE) {
 		const red = data[i];
 		const green = data[i + 1];
 		const blue = data[i + 2];
 
-		const grayValue =
-			(red * RED_GRAY_PROPORTION + green * GREEN_GRAY_PROPORTION + blue * BLUE_GRAY_PROPORTION) *
-			(255 / (RED_GRAY_PROPORTION + GREEN_GRAY_PROPORTION + BLUE_GRAY_PROPORTION));
+		const grayValue = Math.round(
+			red * RED_GRAY_PROPORTION + green * GREEN_GRAY_PROPORTION + blue * BLUE_GRAY_PROPORTION
+		);
 
-		grayScaled[i / 4] = grayValue;
+		if (grayValue > 255 || grayValue < 0) throw new Error('Uint8 Overflow');
+
+		grayScaled[i / RGBA_PIXEL_SIZE] = grayValue;
 	}
 
 	return grayScaled;
