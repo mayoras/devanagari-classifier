@@ -16,7 +16,15 @@ import {
  * @returns a Promise for the Base64 encoded image
  */
 export async function exportToImage(canvas: HTMLCanvasElement): Promise<string | null> {
-	if (isBlank(canvas)) {
+	const ctx = canvas.getContext('2d');
+
+	if (!ctx) {
+		throw new Error('Context 2d is null');
+	}
+
+	const originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+	if (isBlank(originalImageData.data)) {
 		console.log('WARNING: canvas is blank. Not exporting');
 	}
 
@@ -41,9 +49,9 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	ctxResized.drawImage(bitmap, 0, 0);
 
 	// get the new ImageData object from the new canvas
-	const imageData = ctxResized.getImageData(0, 0, canvasResized.width, canvasResized.height);
+	const resizedImageData = ctxResized.getImageData(0, 0, canvasResized.width, canvasResized.height);
 
-	const bmp = toGrayScale(imageData.data).toString();
+	const bmp = toGrayScale(resizedImageData.data).toString();
 
 	return Buffer.from(bmp, 'binary').toString('base64');
 }
@@ -74,18 +82,11 @@ export function toGrayScale(data: Uint8ClampedArray): Uint8Array {
 }
 
 /**
- * Checks if `canvas` DOM element is blank.
- * @param canvas HTML Canvas element
- * @returns `true` if canvas is blank (no drawing by the user), `false` otherwise
+ * Checks if the image data array of the user `canvas` DOM element is blank.
+ * @param data unsigned integer clamped array of RGBA pixel values
+ * @returns `true` if array is blank (zeroed array), `false` otherwise
  */
-export function isBlank(canvas: HTMLCanvasElement): boolean {
-	const ctx = canvas.getContext('2d');
-	if (!ctx) {
-		throw new Error('Context 2d is null');
-	}
-	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	const data = imageData.data;
-
+export function isBlank(data: Uint8ClampedArray): boolean {
 	for (let i = 0; i < data.length; i += 4) {
 		const red = data[i];
 		const green = data[i + 1];

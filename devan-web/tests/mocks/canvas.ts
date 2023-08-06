@@ -1,3 +1,4 @@
+import { RGBA_PIXEL_SIZE } from '$lib/constants/image';
 import * as fs from 'fs';
 
 const DATA_FILENAME = 'tests/mocks/data.txt';
@@ -27,10 +28,20 @@ export async function getMockDrawnCanvas(): Promise<Uint8ClampedArray | null> {
 }
 
 /**
- * Return a random drawn canvas for a given number of pixels
- * @param {number} numPixels Number of pixels (4-tuple RGBA) to be mocked
- * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array corresponding to the image
- * that mock the canvas.
+ * Get a blank canvas for a given number of pixels
+ * @param {number} numPixels Number of pixels (4-tuple RGBA element) to be mocked
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array
+ * corresponding to the image that mock the canvas.
+ */
+export async function getBlankCanvas(numPixels: number): Promise<Uint8ClampedArray | null> {
+	return new Uint8ClampedArray(numPixels * RGBA_PIXEL_SIZE).fill(0);
+}
+
+/**
+ * Get a random drawn canvas for a given number of pixels
+ * @param {number} numPixels Number of pixels (4-tuple RGBA element) to be mocked
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array
+ * corresponding to the image that mock the canvas.
  */
 export async function getMockRandomCanvas(numPixels: number): Promise<Uint8ClampedArray | null> {
 	const pixels: number[] = [];
