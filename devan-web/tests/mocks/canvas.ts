@@ -2,7 +2,11 @@ import * as fs from 'fs';
 
 const DATA_FILENAME = 'tests/mocks/data.txt';
 
-export function getMockDrawnCanvas(): Uint8ClampedArray | null {
+/**
+ * Get a predefined mocked canvas drawing. Useful for checking the drawing integrity after potencial preprocessing.
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array corresponding to the image
+ */
+export async function getMockDrawnCanvas(): Promise<Uint8ClampedArray | null> {
 	let pixels: number[];
 
 	let mockDrawnCanvas: Uint8ClampedArray;
@@ -20,4 +24,34 @@ export function getMockDrawnCanvas(): Uint8ClampedArray | null {
 		console.error('error on readFileSync: ', err);
 		return null;
 	}
+}
+
+/**
+ * Return a random drawn canvas for a given number of pixels
+ * @param {number} numPixels Number of pixels (4-tuple RGBA) to be mocked
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array corresponding to the image
+ * that mock the canvas.
+ */
+export async function getMockRandomCanvas(numPixels: number): Promise<Uint8ClampedArray | null> {
+	const pixels: number[] = [];
+
+	// generate random 8-bit pixels
+	for (let i = 0; i < numPixels; i += 4) {
+		pixels.push(getRandomNumberInRange(0, 255)); // red
+		pixels.push(getRandomNumberInRange(0, 255)); // green
+		pixels.push(getRandomNumberInRange(0, 255)); // blue
+		pixels.push(getRandomNumberInRange(0, 255)); // alpha
+	}
+
+	return new Uint8ClampedArray(pixels);
+}
+
+/**
+ * Generates a random integer within a specified range.
+ * @param {number} min - The minimum value of the range (inclusive).
+ * @param {number} max - The maximum value of the range (inclusive).
+ * @returns {number} A random integer within the specified range.
+ */
+function getRandomNumberInRange(min: number, max: number): number {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
