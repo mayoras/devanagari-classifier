@@ -32,13 +32,16 @@ export function drawGridSquare(
 	ctx: CanvasRenderingContext2D,
 	x: number,
 	y: number,
-	size: number
+	size: number,
+	thick = 2
 ): void {
+	if (thick === 0) return;
+
 	const gridXPosition = Math.floor(x / size);
 	const gridYPosition = Math.floor(y / size);
 
-	for (let i = 0; i < 2; ++i) {
-		for (let j = 0; j < 2; ++j) {
+	for (let i = -thick + 1; i < thick; ++i) {
+		for (let j = -thick + 1; j < thick; ++j) {
 			ctx.fillRect((gridXPosition + i) * size, (gridYPosition + j) * size, size, size);
 		}
 	}
