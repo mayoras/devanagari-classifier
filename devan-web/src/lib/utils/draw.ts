@@ -1,5 +1,3 @@
-import { DRAW_POINTER_SIZE } from '$lib/constants/image';
-
 /**
  * Draws a white rectangle into the canvas with blurred effect.
  * @param ctx rendering 2D context of the canvas containing the drawing
@@ -36,8 +34,12 @@ export function drawGridSquare(
 	y: number,
 	size: number
 ): void {
-	const gridXPosition = Math.floor(x / DRAW_POINTER_SIZE) * DRAW_POINTER_SIZE;
-	const gridYPosition = Math.floor(y / DRAW_POINTER_SIZE) * DRAW_POINTER_SIZE;
+	const gridXPosition = Math.floor(x / size);
+	const gridYPosition = Math.floor(y / size);
 
-	ctx.fillRect(gridXPosition, gridYPosition, size, size);
+	for (let i = 0; i < 2; ++i) {
+		for (let j = 0; j < 2; ++j) {
+			ctx.fillRect((gridXPosition + i) * size, (gridYPosition + j) * size, size, size);
+		}
+	}
 }
