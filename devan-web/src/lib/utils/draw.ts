@@ -1,4 +1,5 @@
-// TODO: change this function to mimic the blurred effect without alpha values
+import { DRAW_POINTER_SIZE } from '$lib/constants/image';
+
 /**
  * Draws a white rectangle into the canvas with blurred effect.
  * @param ctx rendering 2D context of the canvas containing the drawing
@@ -27,4 +28,16 @@ export function drawBlurredRect(
 			size + blurIntensity
 		);
 	}
+}
+
+export function drawGridSquare(
+	ctx: CanvasRenderingContext2D,
+	x: number,
+	y: number,
+	size: number
+): void {
+	const gridXPosition = Math.floor(x / DRAW_POINTER_SIZE);
+	const gridYPosition = Math.floor(y / DRAW_POINTER_SIZE);
+
+	ctx.fillRect(gridXPosition * DRAW_POINTER_SIZE, gridYPosition * DRAW_POINTER_SIZE, size, size);
 }

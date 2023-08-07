@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { drawBlurredRect } from '$lib/utils/draw';
+	import { drawGridSquare } from '$lib/utils/draw';
 	import { exportToImage } from '$lib/utils/image';
 
 	let canvas: HTMLCanvasElement;
@@ -51,11 +51,11 @@
 	function draw(e: PointerEvent) {
 		const { offsetX, offsetY } = e;
 
-		if (!isDrawing) {
+		if (!isDrawing || !ctx) {
 			return;
 		}
 
-		drawBlurredRect(ctx, offsetX, offsetY, dims.size);
+		drawGridSquare(ctx, offsetX, offsetY, dims.size);
 	}
 </script>
 
