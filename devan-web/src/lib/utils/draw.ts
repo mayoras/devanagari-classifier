@@ -36,8 +36,8 @@ export function drawGridSquare(
 	y: number,
 	size: number
 ): void {
-	const gridXPosition = Math.floor(x / DRAW_POINTER_SIZE);
-	const gridYPosition = Math.floor(y / DRAW_POINTER_SIZE);
+	const gridXPosition = Math.floor(x / DRAW_POINTER_SIZE) * DRAW_POINTER_SIZE;
+	const gridYPosition = Math.floor(y / DRAW_POINTER_SIZE) * DRAW_POINTER_SIZE;
 
-	ctx.fillRect(gridXPosition * DRAW_POINTER_SIZE, gridYPosition * DRAW_POINTER_SIZE, size, size);
+	ctx.fillRect(gridXPosition, gridYPosition, size, size);
 }
