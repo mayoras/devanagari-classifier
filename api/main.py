@@ -3,13 +3,16 @@ import uvicorn
 import fastapi as fapi
 
 from typing import Annotated
-from fastapi import FastAPI, Body, File, UploadFile
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 
 from model import ImageBody
+from image import parse_image
+from constants.api import DEVAN_API_PORT, DEVAN_API_HOSTNAME, DEVAN_PROD_ENV
 
-# define port number
-PORT: int = int(os.getenv("DEVAN_API_PORT") or 8080)
+# define hostname and port number
+HOSTNAME: str = DEVAN_API_HOSTNAME
+PORT: int = DEVAN_API_PORT
 
 # TODO: add prediction's module as a dependency
 # instanciate FastAPI app object
@@ -31,20 +34,11 @@ async def root():
     return {"message": "hello", "status": "ok"}
 
 
-@app.post("/test")
-async def test(body: Annotated[ImageBody, Body()]):
-    print(body)
-    return body
-
-
 @app.post("/predict", status_code=fapi.status.HTTP_200_OK)
-async def predict_example(
-    img: Annotated[
-        UploadFile,
-        File(description="Input image with the handwritten character"),
-    ] = ...
-):
-    return {"message": f"image {img.filename} received"}
+async def predict_example(body: Annotated[ImageBody, Body()]):
+    img = parse_image(body)
+
+    return {"message": f"image {body.file} received"}
 
 
 ### RUN ###
@@ -52,9 +46,9 @@ if __name__ == "__main__":
     try:
         uvicorn.run(
             app,
-            host="localhost",
+            host=HOSTNAME,
             port=PORT,
-            log_level="debug",
+            log_level="debug" if not DEVAN_PROD_ENV else "None",
             use_colors=True,
         )
     except:
