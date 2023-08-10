@@ -149,6 +149,14 @@ describe('scaleDownImage', () => {
 		expect(numRowsSmall).toEqual(numRows / 2);
 		expect(numColsSmall).toEqual(numCols / 2);
 	});
+
+	it('should not accept factor < 1', () => {
+		assert(origImage, 'image matrix is null');
+
+		expect(() => scaleDownImage(origImage!, 0.5)).toThrowError('integer');
+		expect(() => scaleDownImage(origImage!, 0)).toThrowError('greater than 0');
+		expect(() => scaleDownImage(origImage!, -1)).toThrowError('greater than 0');
+	});
 });
 
 describe('isBlank', () => {

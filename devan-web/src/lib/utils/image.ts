@@ -1,14 +1,12 @@
 import { Buffer } from 'buffer';
 import {
-	IMG_WIDTH,
-	IMG_HEIGHT,
 	RED_GRAY_PROPORTION,
 	GREEN_GRAY_PROPORTION,
 	BLUE_GRAY_PROPORTION,
-	RGBA_PIXEL_SIZE
+	RGBA_PIXEL_SIZE,
+	DRAW_POINTER_SIZE
 } from '../constants/image';
 
-// TODO: fix resize strategy
 /**
  * Exports the drawing contained in the canvas to the corresponding Base64 encoding of the image
  * contained.
@@ -22,38 +20,59 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 		throw new Error('Context 2d is null');
 	}
 
+	// console.log('>>', canvas.width, canvas.height);
+
 	const originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 	if (isBlank(originalImageData.data)) {
 		console.log('WARNING: canvas is blank. Not exporting');
 	}
 
-	// create a new bitmap resized to 32x32 resolution
-	const bitmap = await createImageBitmap(canvas, {
-		resizeWidth: IMG_WIDTH,
-		resizeHeight: IMG_HEIGHT
-	});
+	// convert to gray-scaled image
+	const origData = toGrayScale(originalImageData.data);
 
-	// create a new canvas
-	const canvasResized = document.createElement('canvas');
-	const ctxResized = canvasResized.getContext('2d');
+	// convert to 2D matrix
+	const origImage = arrayToMatrix(origData, canvas.width, canvas.height);
 
-	if (!ctxResized) {
-		throw new Error('Context 2d is null');
+	// resize image to 32x32 pixels
+	const resizedImage = scaleDownImage(origImage, DRAW_POINTER_SIZE);
+
+	// convert to Uint8Array
+	const arr = new Uint8Array(resizedImage.reduce((flat, subArray) => flat.concat(subArray), []));
+
+	// return encoded array data
+	return Buffer.from(arr.toString(), 'binary').toString('base64');
+}
+
+/**
+ * Scale down a given source gray-scaled image by a scaling factor.
+ * @param srcImage Gray-scaled image to be scaled down
+ * @param factor Scaling factor
+ * @returns The scaled down image
+ */
+export function scaleDownImage(srcImage: number[][], factor: number): number[][] {
+	if (!Number.isInteger(factor)) {
+		throw new Error('factor should be positive integer');
+	}
+	if (factor <= 0) {
+		throw new Error('factor should be greater than 0');
 	}
 
-	canvasResized.width = bitmap.width;
-	canvasResized.height = bitmap.height;
+	const numRows = srcImage.length;
+	const numCols = srcImage[0].length;
 
-	// paste bitmap to the new canvas
-	ctxResized.drawImage(bitmap, 0, 0);
+	const dstImage: number[][] = [];
 
-	// get the new ImageData object from the new canvas
-	const resizedImageData = ctxResized.getImageData(0, 0, canvasResized.width, canvasResized.height);
+	let value: number;
+	for (let iSrc = 0, iDst = 0; iSrc < numRows; iSrc += factor, ++iDst) {
+		dstImage.push([]);
+		for (let jSrc = 0, jDst = 0; jSrc < numCols; jSrc += factor, ++jDst) {
+			value = Math.round(mean(srcImage, iSrc, jSrc, factor, factor));
+			dstImage[iDst][jDst] = value;
+		}
+	}
 
-	const bmp = toGrayScale(resizedImageData.data).toString();
-
-	return Buffer.from(bmp, 'binary').toString('base64');
+	return dstImage;
 }
 
 /**
@@ -98,4 +117,29 @@ export function isBlank(data: Uint8ClampedArray): boolean {
 	}
 
 	return true;
+}
+
+function arrayToMatrix(arr: Uint8Array, rows: number, cols: number): number[][] {
+	const mat: number[][] = [];
+
+	for (let i = 0; i < rows; ++i) {
+		mat.push([]);
+		for (let j = 0; j < cols; ++j) {
+			mat[i].push(arr[i * cols + j]);
+		}
+	}
+
+	return mat;
+}
+
+function mean(img: number[][], row: number, col: number, height: number, width: number): number {
+	let sum = 0;
+
+	for (let i = row; i - row < height; ++i) {
+		for (let j = col; j - col < width; ++j) {
+			sum += img[i][j];
+		}
+	}
+
+	return sum / (height * width);
 }
