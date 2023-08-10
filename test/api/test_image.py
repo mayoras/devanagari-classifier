@@ -11,19 +11,19 @@ class TestImage(unittest.TestCase):
 
         pil_img = img.parse_image(payload=fake_image_body)
 
-        pil_img.show()
+        # pil_img.show()
 
         self.assertIsNotNone(pil_img, msg="PILLOW Image should not be None")
-        self.assertEquals(
+        self.assertEqual(
             pil_img.width,
             NORM_IMG_WIDTH,
             msg=f"Image should have width {NORM_IMG_WIDTH}",
         )
-        self.assertEquals(
+        self.assertEqual(
             pil_img.height,
             NORM_IMG_HEIGHT,
             msg=f"Image should have height {NORM_IMG_HEIGHT}",
         )
-        self.assertEquals(
+        self.assertEqual(
             pil_img.mode, "L", msg=f"Image mode should be grayscale (8-bit pixels)"
         )
