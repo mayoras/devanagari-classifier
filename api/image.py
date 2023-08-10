@@ -26,7 +26,7 @@ def parse_image(payload: ImageBody) -> Image.Image:
 
     mode = translate_image_mode(payload.mode)
 
-    img_arr = np.array(pixels, dtype=np.int32)
+    img_arr = np.array(pixels, dtype=np.uint8)
 
     if img_arr.size != NORM_IMG_WIDTH * NORM_IMG_HEIGHT:
         raise RuntimeError(

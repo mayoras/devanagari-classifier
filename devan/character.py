@@ -26,7 +26,7 @@ class Character:
         return self._array_from_pil(pil_img)
 
     def _array_from_pil(self, pil_img: Image.Image) -> np.ndarray:
-        return np.array(pil_img, dtype=np.int32)
+        return np.array(pil_img, dtype=np.uint8)
 
     def show_character(self):
         plt.imshow(self.img_arr, cmap="gray")
