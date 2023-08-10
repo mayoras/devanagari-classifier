@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { describe, expect, it, beforeEach, assert, test } from 'vitest';
-import { isBlank, toGrayScale } from '$lib/utils/image';
-import { getBlankCanvas, getMockDrawnCanvas, getMockRandomCanvas } from '../mocks/canvas';
+import { isBlank, toGrayScale, scaleDownImage } from '$lib/utils/image';
+import {
+	getBlankCanvas,
+	getMockDrawnCanvas,
+	getMockGrayImageMatrix,
+	getMockRandomCanvas
+} from '../mocks/canvas';
 import { IMG_HEIGHT, IMG_WIDTH } from '$lib/constants/image';
 
 describe('toGrayScale', () => {
@@ -60,6 +65,89 @@ describe('toGrayScale', () => {
 		const zeroGrayCanvas = toGrayScale(zeroCanvas);
 
 		expect(zeroGrayCanvas.length, 'canvas length of zero elements is not zero').toEqual(0);
+	});
+});
+
+describe('scaleDownImage', () => {
+	// canvas is a Uint8ClampedArray array of RGBA pixels
+	let origImage: number[][] | null;
+	let numRows: number;
+	let numCols: number;
+
+	beforeEach(async () => {
+		// fresh new canvas
+		origImage = await getMockGrayImageMatrix();
+
+		assert(origImage, 'image matrix is null');
+
+		numRows = origImage.length;
+		numCols = origImage[0].length;
+	});
+
+	it('should be a function', () => {
+		expect(typeof scaleDownImage, 'is not a function').toBe('function');
+	});
+
+	it('should return a matrix of number', () => {
+		assert(origImage, 'image matrix is null');
+
+		const scaledImage = scaleDownImage(origImage, 1);
+
+		expect(
+			scaledImage.every(row => Array.isArray(row)),
+			'rows are not arrays'
+		).toBeTruthy();
+
+		expect(
+			scaledImage.every(row => row.length === scaledImage[0].length),
+			'rows are not of the same length'
+		).toBeTruthy();
+
+		expect(
+			scaledImage.every(row => row.every(el => typeof el === 'number')),
+			'different types of elements'
+		).toBeTruthy();
+	});
+
+	test('should return a clone of the original image for a factor of 1', () => {
+		assert(origImage, 'image matrix is null');
+
+		const shouldBeClone = scaleDownImage(origImage, 1);
+
+		const compareImages = (img1: number[][], img2: number[][]): boolean => {
+			if (img1.length !== img2.length) {
+				return false;
+			}
+
+			for (let i = 0; i < img1.length; ++i) {
+				for (let j = 0; j < img1[0].length; ++j) {
+					if (img1[i][j] !== img2[i][j]) {
+						return false;
+					}
+				}
+			}
+
+			return true;
+		};
+
+		const result = compareImages(origImage, shouldBeClone);
+
+		expect(result).toBeTruthy();
+	});
+
+	it('should scale down half as small as the original for a factor of 2', () => {
+		assert(origImage, 'image matrix is null');
+
+		const smallerImage = scaleDownImage(origImage, 2);
+
+		const numRowsSmall = smallerImage.length;
+		const numColsSmall = smallerImage[0].length;
+
+		expect(numRowsSmall).toBeLessThan(numRows);
+		expect(numColsSmall).toBeLessThan(numCols);
+
+		expect(numRowsSmall).toEqual(numRows / 2);
+		expect(numColsSmall).toEqual(numCols / 2);
 	});
 });
 

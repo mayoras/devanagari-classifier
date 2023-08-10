@@ -1,11 +1,32 @@
-import { RGBA_PIXEL_SIZE } from '$lib/constants/image';
+import { DRAW_POINTER_SIZE, IMG_HEIGHT, IMG_WIDTH, RGBA_PIXEL_SIZE } from '$lib/constants/image';
 import * as fs from 'fs';
 
 const DATA_FILENAME = 'tests/mocks/data.txt';
 
+const REAL_IMG_WIDTH = IMG_WIDTH * DRAW_POINTER_SIZE;
+const REAL_IMG_HEIGHT = IMG_HEIGHT * DRAW_POINTER_SIZE;
+
+/**
+ * Get a predefined mocked gray-scaled image array mimicking the real image data matrix from
+ * user canvas.
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array corresponding to the image
+ */
+export async function getMockGrayImageMatrix(): Promise<number[][] | null> {
+	const img: number[][] = [];
+
+	for (let i = 0; i < REAL_IMG_HEIGHT; ++i) {
+		img.push([]);
+		for (let j = 0; j < REAL_IMG_WIDTH; ++j) {
+			img[i].push(getRandomNumberInRange(0, 255));
+		}
+	}
+
+	return img;
+}
+
 /**
  * Get a predefined mocked canvas drawing. Useful for checking the drawing integrity after potencial preprocessing.
- * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an 8-bit array corresponding to the image
+ * @return {Promise<Uint8ClampedArray | null>} a Promise that resolves with an RGBA pixel array corresponding to the image
  */
 export async function getMockDrawnCanvas(): Promise<Uint8ClampedArray | null> {
 	let pixels: number[];
