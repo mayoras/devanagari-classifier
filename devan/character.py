@@ -6,7 +6,7 @@ from PIL import Image
 class Character:
     def __init__(
         self,
-        filename: str | None,
+        filename: str | None = None,
         pil_img: Image.Image | None = None,
     ):
         if filename:
