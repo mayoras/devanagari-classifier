@@ -4,4 +4,5 @@ Model design and training is available on my Kaggle notebook (Spanish): https://
 
 TODO:
 
-- Build Characters class instead of single character or two separated classes
+- Build predictions pipeline per request
+- Make UI for posterior prediction response
