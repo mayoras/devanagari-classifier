@@ -1,4 +1,3 @@
-import os
 import uvicorn
 import fastapi as fapi
 
@@ -6,9 +5,11 @@ from typing import Annotated
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 
-from model import ImageBody
-from image import parse_image
-from constants.api import DEVAN_API_PORT, DEVAN_API_HOSTNAME, DEVAN_PROD_ENV
+from devan.api.model import ImageBody
+from devan.api.image import parse_image
+from devan.constants.api import DEVAN_API_PORT, DEVAN_API_HOSTNAME, DEVAN_PROD_ENV
+
+from devan.character import Character
 
 # define hostname and port number
 HOSTNAME: str = DEVAN_API_HOSTNAME
@@ -37,6 +38,15 @@ async def root():
 @app.post("/predict", status_code=fapi.status.HTTP_200_OK)
 async def predict_example(body: Annotated[ImageBody, Body()]):
     img = parse_image(body)
+
+    # Instance a character object
+    user_char = Character(pil_img=img)
+
+    user_char.show_character()
+
+    # Instance a pipeline
+
+    # Return the final response
 
     return {"message": f"image {body.file} received"}
 

@@ -1,9 +1,10 @@
 import numpy as np
 from typing import TypeAlias
 from PIL import Image
-from api.model import ImageBody, ImageMode
-from api.utils import decode_image
-from constants.image import NORM_IMG_HEIGHT, NORM_IMG_WIDTH
+
+from devan.api.model import ImageBody, ImageMode
+from devan.api.utils import decode_image
+from devan.constants.image import NORM_IMG_HEIGHT, NORM_IMG_WIDTH
 
 _Mode: TypeAlias = str
 
