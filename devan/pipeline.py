@@ -26,8 +26,8 @@ class Pipeline:
         # reshape the images to 1D-array of pixels
         X_aux = self.X.reshape(self.X.shape[0], -1)
 
-        # Apply transformations
+        # Apply transformations to all images
         for fun, params in self.trans:
-            X_aux = fun(**params)
+            X_aux = fun(X_aux, **params)
 
         return X_aux
