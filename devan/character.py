@@ -1,6 +1,11 @@
+import re
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
+
+
+def contains_pattern(string: str, pattern: str) -> bool:
+    return bool(re.search(pattern, string))
 
 
 class Character:
@@ -34,3 +39,17 @@ class Character:
         plt.title("Character image")
 
         plt.show()
+
+    def save_character_image(self, filename: str):
+        pil_img = Image.fromarray(self.img_arr)
+
+        fmt = (
+            None
+            if contains_pattern(filename, r"/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i")
+            else "png"
+        )
+
+        if not fmt:
+            print("using PNG format to save the character image.")
+
+        pil_img.save(filename, format=fmt, bitmap_format="bmp")
