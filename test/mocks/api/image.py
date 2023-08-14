@@ -1,4 +1,4 @@
-from api.model import ImageBody
+from devan.api.model import ImageBody
 
 DATA_FILENAME = "./test/mocks/api/data.txt"
 

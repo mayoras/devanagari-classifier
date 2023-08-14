@@ -1,7 +1,7 @@
 import unittest
-import api.image as img
+import devan.api.image as img
 
-from constants.image import NORM_IMG_HEIGHT, NORM_IMG_WIDTH
+from devan.constants.image import NORM_IMG_HEIGHT, NORM_IMG_WIDTH
 from test.mocks.api.image import get_mock_image_body
 
 
