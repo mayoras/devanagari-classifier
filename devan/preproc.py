@@ -4,14 +4,29 @@ from skimage.feature import hog
 BYTE_SIZE = 255
 
 
+class InvalidInputDimension(Exception):
+    def __init__(self) -> None:
+        self.message = f"Input dimension should be {32 * 32}"
+
+
+class InvalidMinMaxValues(Exception):
+    def __init__(self, msg) -> None:
+        self.message = msg
+
+
 def byte_normalize(arr):
     return arr / BYTE_SIZE
 
 
 def min_max_scaling(X, min_vals=None, max_vals=None):
-    if X.size == 1 or not min_vals or not max_vals:
-        print("Warning: using byte-normalization because there's only one example")
+    if X.shape[0] == 1 or min_vals is None or max_vals is None:
+        print("Warning: using byte-normalization")
         return byte_normalize(X)
+
+    if np.any((max_vals - min_vals) <= 0):
+        raise InvalidMinMaxValues(
+            "column max values have to be greater than min values."
+        )
 
     norm = np.zeros(X.shape, dtype=float)
 
@@ -30,6 +45,9 @@ def min_max_scaling(X, min_vals=None, max_vals=None):
 def get_hog_desc(X):
     # is a single image
     if X.shape[0] == 1:
+        if X.shape[1] != 32 * 32:
+            raise InvalidInputDimension
+
         # reconvert feature vector in a matrix (image)
         X_aux = X.reshape(32, 32)
 
@@ -42,6 +60,9 @@ def get_hog_desc(X):
             block_norm="L2-Hys",
         )
     else:
+        if X.shape[1] != 32 * 32:
+            raise InvalidInputDimension
+
         X_aux = X.reshape(X.shape[0], 32, 32)
         # por cada ejemplo, obtenemos su respectivo descriptor HOG
         fds = []
