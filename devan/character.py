@@ -53,3 +53,6 @@ class Character:
             print("using PNG format to save the character image.")
 
         pil_img.save(filename, format=fmt, bitmap_format="bmp")
+
+    def __str__(self) -> str:
+        return f"{self.img_arr}"
