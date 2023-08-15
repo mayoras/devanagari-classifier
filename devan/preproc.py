@@ -55,12 +55,16 @@ def get_hog_desc(X):
         X_aux = X.reshape(NORM_IMG_WIDTH, NORM_IMG_HEIGHT)
 
         # return the HOG descriptor of the image
-        return hog(
-            X_aux,
-            orientations=8,
-            pixels_per_cell=(8, 8),
-            cells_per_block=(1, 1),
-            block_norm="L2-Hys",
+        return np.array(
+            [
+                hog(
+                    X_aux,
+                    orientations=8,
+                    pixels_per_cell=(8, 8),
+                    cells_per_block=(1, 1),
+                    block_norm="L2-Hys",
+                )
+            ]
         )
     else:
         X_aux = X.reshape(X.shape[0], NORM_IMG_WIDTH, NORM_IMG_HEIGHT)
