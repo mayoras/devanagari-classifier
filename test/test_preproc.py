@@ -46,7 +46,7 @@ class TestPreproc(unittest.TestCase):
         )
         self.assertRaises(InvalidMinMaxValues, min_max_negative)
 
-    def test_get_hog_descriptor(self):
+    def test_get_hog_desc(self):
         NUM_CHARS = 3
         HOG_FD_SIZE = 128
 
