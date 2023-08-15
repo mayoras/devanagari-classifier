@@ -1,12 +1,14 @@
 import numpy as np
 from skimage.feature import hog
 
+from devan.constants.image import NORM_IMG_HEIGHT, NORM_IMG_WIDTH
+
 BYTE_SIZE = 255
 
 
 class InvalidInputDimension(Exception):
     def __init__(self) -> None:
-        self.message = f"Input dimension should be {32 * 32}"
+        self.message = f"Input dimension should be {NORM_IMG_HEIGHT * NORM_IMG_WIDTH}"
 
 
 class InvalidMinMaxValues(Exception):
@@ -43,13 +45,14 @@ def min_max_scaling(X, min_vals=None, max_vals=None):
 
 
 def get_hog_desc(X):
+    # check input dimensions
+    if X.shape[1] != NORM_IMG_WIDTH * NORM_IMG_HEIGHT:
+        raise InvalidInputDimension
+
     # is a single image
     if X.shape[0] == 1:
-        if X.shape[1] != 32 * 32:
-            raise InvalidInputDimension
-
         # reconvert feature vector in a matrix (image)
-        X_aux = X.reshape(32, 32)
+        X_aux = X.reshape(NORM_IMG_WIDTH, NORM_IMG_HEIGHT)
 
         # return the HOG descriptor of the image
         return hog(
@@ -60,10 +63,7 @@ def get_hog_desc(X):
             block_norm="L2-Hys",
         )
     else:
-        if X.shape[1] != 32 * 32:
-            raise InvalidInputDimension
-
-        X_aux = X.reshape(X.shape[0], 32, 32)
+        X_aux = X.reshape(X.shape[0], NORM_IMG_WIDTH, NORM_IMG_HEIGHT)
         # por cada ejemplo, obtenemos su respectivo descriptor HOG
         fds = []
         for e in X_aux:
