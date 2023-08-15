@@ -1,5 +1,5 @@
 import os
-from constants.character import LABELS_TRANS
+from devan.constants.character import LABELS_TRANS
 
 from joblib import load
 
