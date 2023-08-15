@@ -2,14 +2,18 @@ import uvicorn
 import fastapi as fapi
 
 from typing import Annotated
+
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 
 from devan.api.model import ImageBody
 from devan.api.image import parse_image
 from devan.constants.api import DEVAN_API_PORT, DEVAN_API_HOSTNAME, DEVAN_PROD_ENV
-
+from devan.constants.model import DEVAN_MODEL_FILENAME
 from devan.character import Character
+from devan.pipeline import Pipeline, TransformList
+from devan.preproc import min_max_scaling, get_hog_desc
+from devan.model import load_model, label_to_char_name
 
 # define hostname and port number
 HOSTNAME: str = DEVAN_API_HOSTNAME
@@ -42,13 +46,28 @@ async def predict_example(body: Annotated[ImageBody, Body()]):
     # Instance a character object
     user_char = Character(pil_img=img)
 
-    user_char.show_character()
+    user_char.save_character_image("./data/images/test.png")
 
-    # Instance a pipeline
+    # Instance a pipeline and add the transforms in order
+    transforms: TransformList = [
+        (min_max_scaling, {"min_vals": None, "max_vals": None}),
+        (get_hog_desc, {}),
+    ]
+    pipeline = Pipeline(chars=[user_char], trans=transforms)
+
+    pipeline.transform()
+
+    # load model
+    model = load_model(DEVAN_MODEL_FILENAME)
+    pipeline.model = model
+
+    # Predict user character
+    pred = pipeline.predict()
 
     # Return the final response
+    labels = [label_to_char_name(l) for l in pred]
 
-    return {"message": f"image {body.file} received"}
+    return {"success": True, "labels": labels}
 
 
 ### RUN ###
