@@ -1,3 +1,4 @@
+from typing import Tuple
 import numpy as np
 
 from PIL import Image
@@ -21,3 +22,10 @@ def get_random_chars(num_chars: int, dim: int) -> list[Character]:
     )
 
     return [Character(pil_img=Image.fromarray(arr)) for arr in chars_arr]
+
+
+def get_ra_example() -> Tuple[Image.Image, int]:
+    RA_EXAMPLE = "data/examples/ra_example.png"
+    pil_img = Image.open(RA_EXAMPLE)
+
+    return pil_img, 26
