@@ -7,3 +7,4 @@ TODO:
 - Build predictions pipeline per request -- **TESTED**
 - Organize user images by id in requests
 - Make UI for posterior prediction response
+- Change square pointer for smooth pointer
