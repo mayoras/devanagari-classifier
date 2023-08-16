@@ -1,3 +1,4 @@
+import types
 import unittest
 import numpy as np
 
@@ -121,7 +122,7 @@ class TestPipeline(unittest.TestCase):
         pred = pipeline.predict()
 
         # check is a function
-        self.assertTrue(callable(pipeline.predict))
+        self.assertTrue(isinstance(pipeline.predict, types.MethodType))
 
         # predictions are a list of integers
         self.assertTrue(type(pred) == list)
@@ -146,8 +147,8 @@ class TestPipeline(unittest.TestCase):
         # get predictions
         pred = pipeline.predict()
 
-        # check is a function
-        self.assertTrue(callable(pipeline.predict))
+        # check is a class method
+        self.assertTrue(isinstance(pipeline.predict, types.MethodType))
 
         # predictions are a list of integers
         self.assertTrue(type(pred) == list)
