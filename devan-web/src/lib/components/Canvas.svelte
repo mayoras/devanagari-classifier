@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { drawGridSquare } from '$lib/utils/draw';
 	import { exportToImage } from '$lib/utils/image';
 
 	let canvas: HTMLCanvasElement;
@@ -55,29 +54,24 @@
 			return;
 		}
 
-		drawGridSquare(ctx, offsetX, offsetY, dims.size);
+		ctx.lineWidth = 30;
+
+		ctx.lineTo(offsetX, offsetY);
+		ctx.stroke();
 	}
 </script>
 
-<div>
-	<canvas
-		bind:this={canvas}
-		on:pointerdown={startDrawing}
-		on:pointerup={stopDrawing}
-		on:pointermove={draw}
-	/>
-</div>
+<canvas
+	bind:this={canvas}
+	on:pointerdown={startDrawing}
+	on:pointerup={stopDrawing}
+	on:pointermove={draw}
+/>
 
 <style>
 	canvas {
 		border-radius: 5px;
 		background-color: black;
 		box-shadow: 0 0 3px 3px black;
-	}
-
-	div {
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 </style>
