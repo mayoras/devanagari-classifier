@@ -9,7 +9,7 @@ class TestImage(unittest.TestCase):
     def test_parse_img(self):
         fake_image_body = get_mock_image_body()
 
-        pil_img = img.parse_image(payload=fake_image_body)
+        _id, pil_img = img.parse_image(payload=fake_image_body)
 
         # pil_img.show()
 

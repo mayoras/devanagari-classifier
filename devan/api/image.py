@@ -1,5 +1,6 @@
 import numpy as np
-from typing import TypeAlias
+from typing import TypeAlias, Tuple
+from pydantic import UUID4
 from PIL import Image
 
 from devan.api.model import ImageBody, ImageMode
@@ -19,7 +20,7 @@ def translate_image_mode(mode: ImageMode) -> _Mode | None:
             return None
 
 
-def parse_image(payload: ImageBody) -> Image.Image:
+def parse_image(payload: ImageBody) -> Tuple[UUID4, Image.Image]:
     # decode base64
     decoded = decode_image(payload.data)
 
@@ -36,4 +37,4 @@ def parse_image(payload: ImageBody) -> Image.Image:
 
     img_arr = img_arr.reshape(NORM_IMG_WIDTH, NORM_IMG_HEIGHT)
 
-    return Image.fromarray(img_arr, mode=mode)
+    return payload.id, Image.fromarray(img_arr, mode=mode)
