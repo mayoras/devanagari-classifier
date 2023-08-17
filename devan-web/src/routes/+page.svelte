@@ -42,8 +42,6 @@
 			data: bitmapEncoded
 		} satisfies ImagePayloadProps;
 
-		console.log(payload);
-
 		sendPayload(payload);
 	}
 </script>
@@ -55,7 +53,7 @@
 			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
 		/>
 		<div class="controls">
-			<button type="button" on:click={handleExport}>Export</button>
+			<button type="button" on:click={handleExport}>Classify</button>
 			<button on:click={() => canvas.clear()}>Clear</button>
 		</div>
 	</div>
