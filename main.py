@@ -46,7 +46,7 @@ async def predict_example(body: Annotated[ImageBody, Body()]):
     # Instance a character object
     user_char = Character(pil_img=img)
 
-    user_char.save_character_image("./data/images/test.png")
+    # user_char.save_character_image("./data/images/test.png")
 
     # Instance a pipeline and add the transforms in order
     transforms: TransformList = [
