@@ -7,7 +7,7 @@ function isUUID(uuid: string): boolean {
 	return pattern.test(uuid);
 }
 
-describe('identifyPayloadImages', () => {
+describe('generatedIDs', () => {
 	const NUM_NO_IDS = 0;
 	const NUM_FEW_IDS = 5;
 	const NUM_MANY_IDS = 50;
