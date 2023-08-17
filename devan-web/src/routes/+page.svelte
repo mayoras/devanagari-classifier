@@ -8,7 +8,7 @@
 		MAX_PENCIL_THICKNESS
 	} from '$lib/constants/canvas';
 
-	type ImagePayloadProps = devan.image.ImagePayloadProps;
+	type PayloadImageProps = devan.image.PayloadImageProps;
 
 	const NUM_THICKNESS_MARKERS = 4;
 
@@ -20,7 +20,7 @@
 	let canvas: Canvas;
 	let pencil_thickness = DEFAULT_PENCIL_THICKNESS;
 
-	async function sendPayload(payload: ImagePayloadProps) {
+	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
 			const response = await fetch(DEVAN_API_URL, {
 				method: 'POST',
@@ -48,12 +48,15 @@
 			throw new Error('image could not be encoded (null).');
 		}
 
-		const payload = {
+		const image = {
+			id: 'tmp',
 			file: 'image',
 			mode: 'gray',
 			alpha: false,
 			data: bitmapEncoded
-		} satisfies ImagePayloadProps;
+		} satisfies PayloadImageProps;
+
+		const payload = [image];
 
 		sendPayload(payload);
 	}

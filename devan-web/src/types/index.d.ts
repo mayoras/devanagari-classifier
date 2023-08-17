@@ -1,6 +1,7 @@
 declare namespace devan {
 	namespace image {
-		interface ImagePayloadProps {
+		interface PayloadImageProps {
+			id: string;
 			file: string;
 			mode: 'gray' | 'rgb';
 			alpha?: boolean;
