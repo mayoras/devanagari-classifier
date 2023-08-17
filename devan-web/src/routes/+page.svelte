@@ -18,7 +18,7 @@
 	);
 
 	let canvas: Canvas;
-	let pencil_thickness = DEFAULT_PENCIL_THICKNESS;
+	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
 
 	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
@@ -69,7 +69,7 @@
 			type="range"
 			min={`${MIN_PENCIL_THICKNESS}`}
 			max={`${MAX_PENCIL_THICKNESS}`}
-			bind:value={pencil_thickness}
+			bind:value={pencilThickness}
 			list="markers"
 		/>
 
@@ -87,7 +87,7 @@
 		<Canvas
 			bind:this={canvas}
 			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
-			thickness={pencil_thickness}
+			thickness={pencilThickness}
 		/>
 		<div class="actions">
 			<button type="button" on:click={handleExport}>Classify</button>
