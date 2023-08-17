@@ -2,10 +2,16 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 	import { DEVAN_API_URL } from '$lib/constants/api';
 	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
+	import {
+		DEFAULT_PENCIL_THICKNESS,
+		MIN_PENCIL_THICKNESS,
+		MAX_PENCIL_THICKNESS
+	} from '$lib/constants/canvas';
 
 	type ImagePayloadProps = devan.image.ImagePayloadProps;
 
 	let canvas: Canvas;
+	let pencil_thickness = DEFAULT_PENCIL_THICKNESS;
 
 	async function sendPayload(payload: ImagePayloadProps) {
 		try {
@@ -47,12 +53,31 @@
 </script>
 
 <div class="container">
+	<div class="pencil-ctls">
+		<input
+			class="thk-ctl"
+			type="range"
+			min={`${MIN_PENCIL_THICKNESS}`}
+			max={`${MAX_PENCIL_THICKNESS}`}
+			bind:value={pencil_thickness}
+			list="markers"
+		/>
+
+		<datalist id="markers">
+			<option value={`${MIN_PENCIL_THICKNESS}`} />
+			<option value={`${MAX_PENCIL_THICKNESS / 4}`} />
+			<option value={`${(2 * MAX_PENCIL_THICKNESS) / 4}`} />
+			<option value={`${(3 * MAX_PENCIL_THICKNESS) / 4}`} />
+			<option value={`${MAX_PENCIL_THICKNESS}`} />
+		</datalist>
+	</div>
 	<div>
 		<Canvas
 			bind:this={canvas}
 			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
+			thickness={pencil_thickness}
 		/>
-		<div class="controls">
+		<div class="actions">
 			<button type="button" on:click={handleExport}>Classify</button>
 			<button on:click={() => canvas.clear()}>Clear</button>
 		</div>
@@ -67,7 +92,7 @@
 		align-items: center;
 	}
 
-	.controls {
+	.actions {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
