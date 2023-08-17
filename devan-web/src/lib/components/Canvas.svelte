@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { exportToImage } from '$lib/utils/image';
+	import { DEFAULT_PENCIL_THICKNESS } from '$lib/constants/canvas';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null;
 	let isDrawing = false;
 
 	export let dims: devan.component.canvas.Dimensions;
+	export let thickness = DEFAULT_PENCIL_THICKNESS;
 
 	export function clear() {
 		ctx?.clearRect(0, 0, canvas.width, canvas.height);
@@ -54,7 +56,7 @@
 			return;
 		}
 
-		ctx.lineWidth = 30;
+		ctx.lineWidth = thickness;
 
 		ctx.lineTo(offsetX, offsetY);
 		ctx.stroke();
