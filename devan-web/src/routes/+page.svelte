@@ -7,6 +7,7 @@
 		MIN_PENCIL_THICKNESS,
 		MAX_PENCIL_THICKNESS
 	} from '$lib/constants/canvas';
+	import { generateIDs } from '$lib/utils/crypto';
 
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
@@ -19,6 +20,7 @@
 
 	let canvas: Canvas;
 	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
+	let numCanvases = 1;
 
 	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
@@ -48,15 +50,20 @@
 			throw new Error('image could not be encoded (null).');
 		}
 
-		const image = {
-			id: 'tmp',
-			file: 'image',
-			mode: 'gray',
-			alpha: false,
-			data: bitmapEncoded
-		} satisfies PayloadImageProps;
+		const ids = generateIDs(numCanvases);
 
-		const payload = [image];
+		const payload: PayloadImageProps[] = [];
+		for (const id of ids) {
+			payload.push({
+				id,
+				file: 'image',
+				mode: 'gray',
+				alpha: false,
+				// WARN: this has to be edited for supporting more canvases.
+				// 		 this is an ad-hoc approach
+				data: bitmapEncoded
+			} satisfies PayloadImageProps);
+		}
 
 		sendPayload(payload);
 	}
