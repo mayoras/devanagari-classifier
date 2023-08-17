@@ -166,3 +166,4 @@ model.ipynb
 __pycache__/
 
 *.code-workspace
+data/images/*
