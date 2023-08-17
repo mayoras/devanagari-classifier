@@ -10,6 +10,13 @@
 
 	type ImagePayloadProps = devan.image.ImagePayloadProps;
 
+	const NUM_THICKNESS_MARKERS = 4;
+
+	let markers = Array.from(
+		{ length: NUM_THICKNESS_MARKERS + 1 },
+		(_, i) => MIN_PENCIL_THICKNESS + i - 1
+	);
+
 	let canvas: Canvas;
 	let pencil_thickness = DEFAULT_PENCIL_THICKNESS;
 
@@ -64,11 +71,13 @@
 		/>
 
 		<datalist id="markers">
-			<option value={`${MIN_PENCIL_THICKNESS}`} />
-			<option value={`${MAX_PENCIL_THICKNESS / 4}`} />
-			<option value={`${(2 * MAX_PENCIL_THICKNESS) / 4}`} />
-			<option value={`${(3 * MAX_PENCIL_THICKNESS) / 4}`} />
-			<option value={`${MAX_PENCIL_THICKNESS}`} />
+			{#each markers as mark (mark)}
+				<option
+					value={`${
+						mark > 0 ? (mark * MAX_PENCIL_THICKNESS) / NUM_THICKNESS_MARKERS : MIN_PENCIL_THICKNESS
+					}`}
+				/>
+			{/each}
 		</datalist>
 	</div>
 	<div>
