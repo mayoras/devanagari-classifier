@@ -5,6 +5,7 @@ Model design and training is available on my Kaggle notebook (Spanish): https://
 TODO:
 
 - Build predictions pipeline per request -- **TESTED**
-- Organize user images by id in requests/response -- **DONE**
+- Organize user images by id in requests/response -- **DEV**
+  - Test order of predictions
 - Make UI for posterior prediction response
 - Change square pointer for smooth pointer -- **DONE**
