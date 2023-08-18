@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
+	import Slider from '$lib/components/Slider.svelte';
 	import { DEVAN_API_URL } from '$lib/constants/api';
 	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
 	import {
@@ -11,12 +12,7 @@
 
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
-	const NUM_THICKNESS_MARKERS = 2;
-
-	let markers = Array.from(
-		{ length: NUM_THICKNESS_MARKERS + 1 },
-		(_, i) => MIN_PENCIL_THICKNESS + i - 1
-	);
+	const NUM_THICKNESS_MARKERS = 3;
 
 	let canvas: Canvas;
 	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
@@ -79,26 +75,12 @@
 					<img src="/svg/Bold.svg" alt="Bold pencil" />
 				</div>
 
-				<input
-					class="thk-ctl"
-					type="range"
-					min={`${MIN_PENCIL_THICKNESS}`}
-					max={`${MAX_PENCIL_THICKNESS}`}
-					bind:value={pencilThickness}
-					list="markers"
+				<Slider
+					minValue={MIN_PENCIL_THICKNESS}
+					maxValue={MAX_PENCIL_THICKNESS}
+					numMarkers={NUM_THICKNESS_MARKERS}
+					slideValue={pencilThickness}
 				/>
-
-				<datalist id="markers">
-					{#each markers as mark (mark)}
-						<option
-							value={`${
-								mark > 0
-									? (mark * MAX_PENCIL_THICKNESS) / NUM_THICKNESS_MARKERS
-									: MIN_PENCIL_THICKNESS
-							}`}
-						/>
-					{/each}
-				</datalist>
 			</div>
 			<Canvas
 				bind:this={canvas}
@@ -118,11 +100,6 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1em;
-	}
-
-	.thk-ctl {
-		width: 100%;
-		height: 100%;
 	}
 
 	.thk-icons {
