@@ -7,8 +7,9 @@
 		MIN_PENCIL_THICKNESS,
 		MAX_PENCIL_THICKNESS
 	} from '$lib/constants/canvas';
+	import { generateIDs } from '$lib/utils/crypto';
 
-	type ImagePayloadProps = devan.image.ImagePayloadProps;
+	type PayloadImageProps = devan.image.PayloadImageProps;
 
 	const NUM_THICKNESS_MARKERS = 4;
 
@@ -18,9 +19,10 @@
 	);
 
 	let canvas: Canvas;
-	let pencil_thickness = DEFAULT_PENCIL_THICKNESS;
+	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
+	let numCanvases = 1;
 
-	async function sendPayload(payload: ImagePayloadProps) {
+	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
 			const response = await fetch(DEVAN_API_URL, {
 				method: 'POST',
@@ -48,12 +50,20 @@
 			throw new Error('image could not be encoded (null).');
 		}
 
-		const payload = {
-			file: 'image',
-			mode: 'gray',
-			alpha: false,
-			data: bitmapEncoded
-		} satisfies ImagePayloadProps;
+		const ids = generateIDs(numCanvases);
+
+		const payload: PayloadImageProps[] = [];
+		for (const id of ids) {
+			payload.push({
+				id,
+				file: 'image',
+				mode: 'gray',
+				alpha: false,
+				// WARN: this has to be edited for supporting more canvases.
+				// 		 this is an ad-hoc approach
+				data: bitmapEncoded
+			} satisfies PayloadImageProps);
+		}
 
 		sendPayload(payload);
 	}
@@ -66,7 +76,7 @@
 			type="range"
 			min={`${MIN_PENCIL_THICKNESS}`}
 			max={`${MAX_PENCIL_THICKNESS}`}
-			bind:value={pencil_thickness}
+			bind:value={pencilThickness}
 			list="markers"
 		/>
 
@@ -84,7 +94,7 @@
 		<Canvas
 			bind:this={canvas}
 			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
-			thickness={pencil_thickness}
+			thickness={pencilThickness}
 		/>
 		<div class="actions">
 			<button type="button" on:click={handleExport}>Classify</button>

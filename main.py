@@ -1,7 +1,7 @@
 import uvicorn
 import fastapi as fapi
 
-from typing import Annotated
+from typing import Annotated, List
 
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
@@ -40,11 +40,11 @@ async def root():
 
 
 @app.post("/predict", status_code=fapi.status.HTTP_200_OK)
-async def predict_example(body: Annotated[ImageBody, Body()]):
-    img = parse_image(body)
+async def predict_example(body: Annotated[List[ImageBody], Body()]):
+    imgs = [parse_image(ib) for ib in body]
 
     # Instance a character object
-    user_char = Character(pil_img=img)
+    user_chars = [Character(id=id, pil_img=img) for (id, img) in imgs]
 
     # user_char.save_character_image("./data/images/test.png")
 
@@ -53,7 +53,7 @@ async def predict_example(body: Annotated[ImageBody, Body()]):
         (min_max_scaling, {"min_vals": None, "max_vals": None}),
         (get_hog_desc, {}),
     ]
-    pipeline = Pipeline(chars=[user_char], trans=transforms)
+    pipeline = Pipeline(chars=user_chars, trans=transforms)
 
     pipeline.transform()
 
@@ -65,7 +65,9 @@ async def predict_example(body: Annotated[ImageBody, Body()]):
     pred = pipeline.predict()
 
     # Return the final response
-    labels = [label_to_char_name(l) for l in pred]
+    labels = {
+        f"{c.id}": label_to_char_name(label) for (c, label) in zip(user_chars, pred)
+    }
 
     return {"success": True, "labels": labels}
 

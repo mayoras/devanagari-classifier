@@ -1,7 +1,9 @@
 import re
 import numpy as np
 import matplotlib.pyplot as plt
+
 from PIL import Image
+from pydantic import UUID4
 
 
 def contains_pattern(string: str, pattern: str) -> bool:
@@ -11,15 +13,16 @@ def contains_pattern(string: str, pattern: str) -> bool:
 class Character:
     def __init__(
         self,
+        id: UUID4 | None = None,
         filename: str | None = None,
         pil_img: Image.Image | None = None,
     ):
+        self.id = id
+        self.filename = filename
         if filename:
             print(f"using filename {filename} for instanciate the Character object")
-            self.filename = filename
             self.img_arr = self._array_from_file(filename)
         elif pil_img:
-            self.filename = None
             self.img_arr = self._array_from_pil(pil_img)
         else:
             raise NotImplementedError(
@@ -55,4 +58,4 @@ class Character:
         pil_img.save(filename, format=fmt, bitmap_format="bmp")
 
     def __str__(self) -> str:
-        return f"{self.img_arr}"
+        return f"{self.id}: {self.img_arr}"
