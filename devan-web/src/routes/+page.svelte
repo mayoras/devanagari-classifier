@@ -11,7 +11,7 @@
 
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
-	const NUM_THICKNESS_MARKERS = 4;
+	const NUM_THICKNESS_MARKERS = 2;
 
 	let markers = Array.from(
 		{ length: NUM_THICKNESS_MARKERS + 1 },
@@ -70,32 +70,42 @@
 </script>
 
 <div class="container">
-	<div class="pencil-ctls">
-		<input
-			class="thk-ctl"
-			type="range"
-			min={`${MIN_PENCIL_THICKNESS}`}
-			max={`${MAX_PENCIL_THICKNESS}`}
-			bind:value={pencilThickness}
-			list="markers"
-		/>
-
-		<datalist id="markers">
-			{#each markers as mark (mark)}
-				<option
-					value={`${
-						mark > 0 ? (mark * MAX_PENCIL_THICKNESS) / NUM_THICKNESS_MARKERS : MIN_PENCIL_THICKNESS
-					}`}
-				/>
-			{/each}
-		</datalist>
-	</div>
 	<div>
-		<Canvas
-			bind:this={canvas}
-			dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
-			thickness={pencilThickness}
-		/>
+		<div>
+			<div class="pencil-ctls">
+				<div class="thk-icons">
+					<img src="/svg/Thin.svg" alt="Thin pencil" />
+					<img src="/svg/Medium.svg" alt="Medium pencil" />
+					<img src="/svg/Bold.svg" alt="Bold pencil" />
+				</div>
+
+				<input
+					class="thk-ctl"
+					type="range"
+					min={`${MIN_PENCIL_THICKNESS}`}
+					max={`${MAX_PENCIL_THICKNESS}`}
+					bind:value={pencilThickness}
+					list="markers"
+				/>
+
+				<datalist id="markers">
+					{#each markers as mark (mark)}
+						<option
+							value={`${
+								mark > 0
+									? (mark * MAX_PENCIL_THICKNESS) / NUM_THICKNESS_MARKERS
+									: MIN_PENCIL_THICKNESS
+							}`}
+						/>
+					{/each}
+				</datalist>
+			</div>
+			<Canvas
+				bind:this={canvas}
+				dims={{ width: IMG_WIDTH, height: IMG_HEIGHT, size: DRAW_POINTER_SIZE }}
+				thickness={pencilThickness}
+			/>
+		</div>
 		<div class="actions">
 			<button type="button" on:click={handleExport}>Classify</button>
 			<button on:click={() => canvas.clear()}>Clear</button>
@@ -104,6 +114,28 @@
 </div>
 
 <style>
+	.pencil-ctls {
+		display: flex;
+		flex-direction: column;
+		padding: 1em;
+	}
+
+	.thk-ctl {
+		width: 100%;
+		height: 100%;
+	}
+
+	.thk-icons {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.thk-icons > img {
+		width: 2rem;
+		height: 3rem;
+	}
+
 	.container {
 		display: flex;
 		height: 100vh;
