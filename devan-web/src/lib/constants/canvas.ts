@@ -1,3 +1,3 @@
 export const MIN_PENCIL_THICKNESS = 1;
 export const MAX_PENCIL_THICKNESS = 80;
-export const DEFAULT_PENCIL_THICKNESS = 40;
+export const DEFAULT_PENCIL_THICKNESS = 30;
