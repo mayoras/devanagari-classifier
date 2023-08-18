@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Slider from '$lib/components/Slider.svelte';
+	import Button from '$lib/components/Button.svelte';
 	import { DEVAN_API_URL } from '$lib/constants/api';
 	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
 	import {
@@ -89,8 +90,8 @@
 			/>
 		</div>
 		<div class="actions">
-			<button type="button" on:click={handleExport}>Classify</button>
-			<button on:click={() => canvas.clear()}>Clear</button>
+			<Button type="button" label="Classify" on:click={handleExport} />
+			<Button type="button" label="Clear" on:click={() => canvas.clear()} />
 		</div>
 	</div>
 </div>
@@ -125,24 +126,5 @@
 		justify-content: space-between;
 		align-items: center;
 		margin-top: 2em;
-	}
-
-	button {
-		width: 45%;
-		height: 3em;
-		font-size: large;
-		border: 2px solid purple;
-		background: transparent;
-		cursor: pointer;
-		transition: 0.5s ease-out;
-		box-shadow: 0 0 3px 3px skyblue;
-		font-weight: bold;
-		color: purple;
-	}
-
-	button:hover {
-		background-color: cyan;
-		box-shadow: 0 0 4px 4px skyblue;
-		transition: 0.5s linear;
 	}
 </style>
