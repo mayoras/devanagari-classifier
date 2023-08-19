@@ -65,9 +65,10 @@ async def predict_example(body: Annotated[List[ImageBody], Body()]):
     pred = pipeline.predict()
 
     # Return the final response
-    labels = {
-        f"{c.id}": label_to_char_name(label) for (c, label) in zip(user_chars, pred)
-    }
+    labels = [
+        {"id": c.id, "label": label_to_char_name(label)}
+        for (c, label) in zip(user_chars, pred)
+    ]
 
     return {"success": True, "labels": labels}
 
