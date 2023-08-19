@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -147,8 +148,8 @@
 						<strong>Resolving...</strong>
 					{:then label}
 						<h2 class="pred-title">Your character is:</h2>
-						<img src="" alt="" />
-						<strong class="pred-character-name">{label}</strong>
+						<img src="" alt="" transition:fade={{ duration: 1000 }} />
+						<strong class="pred-character-name"><i>"{label}"</i></strong>
 					{:catch error}
 						<p style="color: red">Error on server response: {error.message}</p>
 					{/await}
@@ -240,5 +241,11 @@
 	.thk-icons > img {
 		width: 2rem;
 		height: 3rem;
+	}
+
+	.pred-character-name {
+		font-size: larger;
+		font-weight: bolder;
+		margin-top: 1em;
 	}
 </style>
