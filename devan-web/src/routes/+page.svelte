@@ -10,6 +10,7 @@
 		MAX_PENCIL_THICKNESS
 	} from '$lib/constants/canvas';
 	import { generateIDs } from '$lib/utils/crypto';
+	import { isResponse } from '$lib/utils/response';
 
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
@@ -19,6 +20,34 @@
 	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
 	let numCanvases = 1;
 	let predicted = false;
+	let currentID: string;
+	let promise: Promise<string>;
+
+	async function handleResponse(res: Response) {
+		const json: unknown = await res.json();
+
+		if (!isResponse(json)) {
+			throw new Error(`${json} does not satisfies Response interface.`);
+		}
+
+		if (!json.success) {
+			throw new Error('Request was not accepted by the server.');
+		}
+
+		if (json.labels.length > 1) {
+			console.warn(
+				'Multiple character prediction is not supported yet.\nJust showing the current character'
+			);
+		}
+
+		let pred = json.labels.find(el => el.id === currentID);
+
+		if (pred === undefined) {
+			throw new Error('current image ID does not match any response ID.');
+		}
+
+		return pred.label;
+	}
 
 	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
@@ -32,9 +61,9 @@
 				body: JSON.stringify(payload)
 			});
 
-			const json = await response.json();
+			predicted = true;
 
-			console.log(json);
+			promise = handleResponse(response);
 		} catch (e) {
 			console.error('Error on FETCH:', e);
 			return null;
@@ -49,6 +78,8 @@
 		}
 
 		const ids = generateIDs(numCanvases);
+
+		currentID = ids[0];
 
 		const payload: PayloadImageProps[] = [];
 		for (const id of ids) {
@@ -93,7 +124,14 @@
 			</div>
 			<div class="actions">
 				<Button type="button" label="Classify" on:click={handleExport} />
-				<Button type="button" label="Clear" on:click={() => canvas.clear()} />
+				<Button
+					type="button"
+					label="Clear"
+					on:click={() => {
+						predicted = false;
+						canvas.clear();
+					}}
+				/>
 			</div>
 		</div>
 	</div>
@@ -105,9 +143,15 @@
 		<div class="card">
 			<div class="card-content">
 				{#if predicted}
-					<h2 class="pred-title">Your character is:</h2>
-					<img src="" alt="" />
-					<span class="pred-character-name"><i>Put character name</i></span>
+					{#await promise}
+						<strong>Resolving...</strong>
+					{:then label}
+						<h2 class="pred-title">Your character is:</h2>
+						<img src="" alt="" />
+						<strong class="pred-character-name">{label}</strong>
+					{:catch error}
+						<p style="color: red">Error on server response: {error.message}</p>
+					{/await}
 				{:else}
 					<h2 class="pred-title">You have not made a character prediction.</h2>
 					<img src="/svg/Brain.svg" alt="Gray Brain Icon" />
