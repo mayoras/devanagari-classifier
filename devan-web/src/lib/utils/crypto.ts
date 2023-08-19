@@ -4,10 +4,14 @@ export function generateIDs(numIDs: number, generator: IDGenerator = null): stri
 	const ids: string[] = [];
 
 	// select generator
-	const genID = generator ? generator : crypto.randomUUID;
-
-	for (let i = 0; i < numIDs; ++i) {
-		ids.push(genID());
+	if (generator) {
+		for (let i = 0; i < numIDs; ++i) {
+			ids.push(generator());
+		}
+	} else {
+		for (let i = 0; i < numIDs; ++i) {
+			ids.push(crypto.randomUUID());
+		}
 	}
 
 	return ids;
