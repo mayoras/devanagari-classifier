@@ -25,7 +25,8 @@ export async function exportToImage(canvas: HTMLCanvasElement): Promise<string |
 	const originalImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
 	if (isBlank(originalImageData.data)) {
-		console.log('WARNING: canvas is blank. Not exporting');
+		console.warn('canvas is blank. Not exporting');
+		return null;
 	}
 
 	// convert to gray-scaled image
