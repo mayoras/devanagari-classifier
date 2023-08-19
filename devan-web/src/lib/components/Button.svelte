@@ -18,7 +18,7 @@
 		cursor: pointer;
 		transition: 0.5s ease-out;
 		box-shadow: 0 0 3px 3px skyblue;
-		font-weight: bold;
+		font-weight: bolder;
 		color: purple;
 	}
 
