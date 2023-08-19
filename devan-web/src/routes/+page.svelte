@@ -77,10 +77,10 @@
 				</div>
 
 				<Slider
-					minValue={MIN_PENCIL_THICKNESS}
-					maxValue={MAX_PENCIL_THICKNESS}
+					bind:value={pencilThickness}
+					min={MIN_PENCIL_THICKNESS}
+					max={MAX_PENCIL_THICKNESS}
 					numMarkers={NUM_THICKNESS_MARKERS}
-					slideValue={pencilThickness}
 				/>
 			</div>
 			<Canvas
