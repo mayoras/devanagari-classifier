@@ -74,8 +74,12 @@
 	async function handleExport() {
 		const bitmapEncoded = await canvas.exportCanvas();
 
-		if (!bitmapEncoded) {
+		if (bitmapEncoded === null) {
 			throw new Error('image could not be encoded (null).');
+		}
+
+		if (bitmapEncoded === '') {
+			return;
 		}
 
 		const ids = generateIDs(numCanvases);
