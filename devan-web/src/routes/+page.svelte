@@ -153,18 +153,22 @@
 					{#await promise}
 						<strong>Predicting...</strong>
 					{:then label}
-						<h2 class="pred-title">Your character is:</h2>
-						<span class="pred-character-symbol" transition:fade={{ duration: 1000 }}
+						<h2 class="pred-title" in:fade={{ duration: 500 }}>Your character is:</h2>
+						<span class="pred-character-symbol" in:fade={{ duration: 500 }}
 							>{labelToCharacter(label)}</span
 						>
-						<strong class="pred-character-name"><i>"{label}"</i></strong>
+
+						<strong class="pred-character-name" in:fade={{ duration: 500 }}><i>"{label}"</i></strong
+						>
 					{:catch error}
 						<p style="color: red">Error on server response: {error.message}</p>
 					{/await}
 				{:else}
-					<h2 class="pred-title">You have not made a character prediction.</h2>
-					<img src="/svg/Brain.svg" alt="Gray Brain Icon" />
-					<span class="pred-no-character"
+					<h2 class="pred-title" in:fade={{ duration: 500 }}>
+						You have not made a character prediction.
+					</h2>
+					<img src="/svg/Brain.svg" alt="Gray Brain Icon" in:fade={{ duration: 500 }} />
+					<span class="pred-no-character" in:fade={{ duration: 500 }}
 						>Draw a character and click <code>Classify</code> to show class prediction.</span
 					>
 				{/if}
