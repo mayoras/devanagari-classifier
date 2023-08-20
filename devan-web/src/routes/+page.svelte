@@ -3,6 +3,7 @@
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import Card from '$lib/components/Card.svelte';
 	import { DEVAN_API_URL } from '$lib/constants/api';
 	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
 	import {
@@ -146,11 +147,11 @@
 		class="pred-container"
 		style="width: {IMG_WIDTH * DRAW_POINTER_SIZE}px; height: {IMG_HEIGHT * DRAW_POINTER_SIZE}px;"
 	>
-		<div class="card">
+		<Card>
 			<div class="card-content">
 				{#if predicted}
 					{#await promise}
-						<strong>Resolving...</strong>
+						<strong>Predicting...</strong>
 					{:then label}
 						<h2 class="pred-title">Your character is:</h2>
 						<span class="pred-character-symbol" transition:fade={{ duration: 1000 }}
@@ -168,7 +169,7 @@
 					>
 				{/if}
 			</div>
-		</div>
+		</Card>
 	</div>
 </main>
 
@@ -176,18 +177,6 @@
 	.pred-container {
 		margin-top: 1em;
 		z-index: -1;
-	}
-
-	.card {
-		display: flex;
-		justify-content: center;
-
-		width: 100%;
-		height: 100%;
-		background-color: white;
-		border-radius: 2.5% 5% 5% 2.5%;
-
-		box-shadow: 0 0 7px 3px teal;
 	}
 
 	.card-content {
