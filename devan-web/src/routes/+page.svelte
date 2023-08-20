@@ -165,7 +165,7 @@
 					<h2 class="pred-title">You have not made a character prediction.</h2>
 					<img src="/svg/Brain.svg" alt="Gray Brain Icon" />
 					<span class="pred-no-character"
-						>Draw a character and click <code>Predict</code> to show prediction.</span
+						>Draw a character and click <code>Classify</code> to show class prediction.</span
 					>
 				{/if}
 			</div>
@@ -215,7 +215,7 @@
 
 	.canvas-container {
 		display: flex;
-		height: 90vh;
+		height: 80vh;
 		justify-content: center;
 		align-items: center;
 	}
