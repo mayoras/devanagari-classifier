@@ -169,7 +169,7 @@
 					</h2>
 					<img src="/svg/Brain.svg" alt="Gray Brain Icon" in:fade={{ duration: 500 }} />
 					<span class="pred-no-character" in:fade={{ duration: 500 }}
-						>Draw a character and click <code>Classify</code> to show class prediction.</span
+						>Draw a devanagari character and click <code>Classify</code> to show class prediction.</span
 					>
 				{/if}
 			</div>
