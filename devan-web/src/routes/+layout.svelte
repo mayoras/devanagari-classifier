@@ -27,6 +27,7 @@
 
 <header>
 	<div class="container">
+		<div class="first" />
 		<h1 class="title">Devanagari Character Classifier</h1>
 		<button on:click={toggleTheme} class="theme-switcher">
 			{#if $darkTheme}
@@ -52,10 +53,15 @@
 
 <style>
 	.container {
-		display: grid;
-		grid-template-columns: 1fr auto;
+		display: flex;
+		justify-content: space-around;
 		align-items: center;
 		padding: 1em;
+	}
+
+	.first {
+		width: 2.5em;
+		opacity: 0;
 	}
 	.title {
 		margin: 0;
@@ -64,12 +70,10 @@
 		font-size: 2.5em;
 		font-weight: lighter;
 		text-align: center;
-		margin-left: 1em;
 	}
 
 	.theme-switcher {
 		text-align: right;
-		margin-right: 4em;
 		padding: 0.5em;
 		cursor: pointer;
 		border: none;
