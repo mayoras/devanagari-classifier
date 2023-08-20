@@ -12,6 +12,7 @@
 	} from '$lib/constants/canvas';
 	import { generateIDs } from '$lib/utils/crypto';
 	import { isResponse } from '$lib/utils/response';
+	import { labelToCharacter } from '$lib/utils/translate';
 
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
@@ -152,7 +153,9 @@
 						<strong>Resolving...</strong>
 					{:then label}
 						<h2 class="pred-title">Your character is:</h2>
-						<img src="" alt="" transition:fade={{ duration: 1000 }} />
+						<span class="pred-character-symbol" transition:fade={{ duration: 1000 }}
+							>{labelToCharacter(label)}</span
+						>
 						<strong class="pred-character-name"><i>"{label}"</i></strong>
 					{:catch error}
 						<p style="color: red">Error on server response: {error.message}</p>
@@ -202,6 +205,11 @@
 		font-size: larger;
 		font-weight: bolder;
 		margin-bottom: 15px;
+	}
+
+	.pred-character-symbol {
+		font-size: 8em;
+		font-weight: bolder;
 	}
 
 	.card-content > img {
