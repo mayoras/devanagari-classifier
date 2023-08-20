@@ -9,9 +9,9 @@
 
 		width: 100%;
 		height: 100%;
-		background-color: white;
+		background-color: var(--white);
 		border-radius: 2.5% 5% 5% 2.5%;
 
-		box-shadow: 0 0 7px 3px teal;
+		box-shadow: 0 0 7px 3px var(--gray2);
 	}
 </style>

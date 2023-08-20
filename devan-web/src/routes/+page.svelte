@@ -190,7 +190,7 @@
 		align-items: center;
 		text-align: center;
 
-		color: gray;
+		color: var(--gray3);
 		font-weight: 500;
 	}
 

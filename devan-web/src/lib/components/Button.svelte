@@ -13,18 +13,17 @@
 		width: 45%;
 		height: 3em;
 		font-size: large;
-		border: 2px solid purple;
+		border: 2px solid var(--purple);
 		background: transparent;
 		cursor: pointer;
 		transition: 0.5s ease-out;
 		box-shadow: 0 0 3px 3px skyblue;
 		font-weight: bolder;
-		color: purple;
 	}
 
 	button:hover {
-		background-color: cyan;
-		box-shadow: 0 0 4px 4px skyblue;
+		background-color: var(--gray1);
+		box-shadow: 0 0 4px 4px var(--gray1);
 		transition: 0.5s linear;
 	}
 </style>

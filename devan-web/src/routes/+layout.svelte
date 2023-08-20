@@ -30,6 +30,6 @@
 		padding: 1em;
 		font-size: larger;
 		font-weight: lighter;
-		color: teal;
+		color: var(--gray4);
 	}
 </style>
