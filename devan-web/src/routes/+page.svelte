@@ -196,6 +196,7 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
+		margin-inline: 1em;
 
 		color: var(--gray-text);
 		font-weight: 500;
