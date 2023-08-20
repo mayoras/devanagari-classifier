@@ -22,8 +22,8 @@
 	}
 
 	button:hover {
-		background-color: var(--gray1);
-		box-shadow: 0 0 4px 4px var(--gray1);
+		background-color: var(--button-hover-bg);
+		/* box-shadow: 0 0 4px 4px var(--gray1); */
 		transition: 0.5s linear;
 	}
 </style>

@@ -74,6 +74,6 @@
 	canvas {
 		border-radius: 5px;
 		background-color: var(--black);
-		box-shadow: 0 0 3px 3px var(--black);
+		box-shadow: 0 0 3px 3px var(--box-shadow);
 	}
 </style>
