@@ -49,7 +49,7 @@
 
 <slot />
 
-<footer><span>Made by Cesar A. Mayora</span></footer>
+<footer><span>Made by Cesar Mayora</span></footer>
 
 <style>
 	.container {

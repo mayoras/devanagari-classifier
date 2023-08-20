@@ -171,9 +171,7 @@
 						<p style="color: red">Error on server response: {error.message}</p>
 					{/await}
 				{:else}
-					<h2 class="pred-title" in:fade={{ duration: 500 }}>
-						You have not made a character prediction.
-					</h2>
+					<h2 class="pred-title" in:fade={{ duration: 500 }}>Canvas is empty!</h2>
 					<img src="/svg/Brain.svg" alt="Gray Brain Icon" in:fade={{ duration: 500 }} />
 					<span class="pred-no-character" in:fade={{ duration: 500 }}
 						>Draw a devanagari character and click <code>Classify</code> to show class prediction.</span
