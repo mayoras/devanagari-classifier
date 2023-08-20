@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
+	import { darkTheme } from '../stores/theme';
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import Button from '$lib/components/Button.svelte';
@@ -111,9 +112,15 @@
 			<div>
 				<div class="pencil-ctls">
 					<div class="thk-icons">
-						<img src="/svg/Thin.svg" alt="Thin pencil" />
-						<img src="/svg/Medium.svg" alt="Medium pencil" />
-						<img src="/svg/Bold.svg" alt="Bold pencil" />
+						{#if $darkTheme}
+							<img src="/svg/dark/Thin.svg" alt="Thin pencil" />
+							<img src="/svg/dark/Medium.svg" alt="Medium pencil" />
+							<img src="/svg/dark/Bold.svg" alt="Bold pencil" />
+						{:else}
+							<img src="/svg/light/Thin.svg" alt="Thin pencil" />
+							<img src="/svg/light/Medium.svg" alt="Medium pencil" />
+							<img src="/svg/light/Bold.svg" alt="Bold pencil" />
+						{/if}
 					</div>
 
 					<Slider

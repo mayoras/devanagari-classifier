@@ -1,3 +1,16 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { darkTheme } from '../stores/theme';
+	import { waitForElement } from '$lib/utils/dom';
+
+	onMount(async () => {
+		const body = await waitForElement('body');
+		if (body) {
+			darkTheme.set((body as HTMLBodyElement).classList.contains('dark'));
+		}
+	});
+</script>
+
 <header>
 	<div class="container">
 		<h1 class="title">Devanagari Character Classifier</h1>
