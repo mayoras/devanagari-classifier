@@ -22,8 +22,9 @@ def byte_normalize(arr):
 
 def min_max_scaling(X, min_vals=None, max_vals=None):
     if X.shape[0] == 1 or min_vals is None or max_vals is None:
-        print("Warning: using byte-normalization")
         return byte_normalize(X)
+
+    print("Not using byte-normalization", flush=True)
 
     if np.any((max_vals - min_vals) <= 0):
         raise InvalidMinMaxValues(
