@@ -2,7 +2,7 @@
 
 set -xe
 
-IMAGE_NAME=devan_api
+IMAGE_NAME=cezeitar/devan_api:test
 
 # remove container
 docker rm -f $IMAGE_NAME
