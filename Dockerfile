@@ -1,5 +1,9 @@
 FROM python:3.10.12
 
+# default env variables
+ENV DEVAN_API_HOSTNAME=0.0.0.0
+ENV DEVAN_API_PORT=8080
+
 WORKDIR /app
 
 COPY ./requirements.txt /app/requirements.txt
