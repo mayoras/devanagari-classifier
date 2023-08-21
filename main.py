@@ -32,6 +32,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+MODEL = load_model(DEVAN_MODEL_FILENAME)
+
 
 ### ROUTES ###
 @app.get("/", status_code=200)
@@ -58,8 +60,7 @@ async def predict_example(body: Annotated[List[ImageBody], Body()]):
     pipeline.transform()
 
     # load model
-    model = load_model(DEVAN_MODEL_FILENAME)
-    pipeline.model = model
+    pipeline.model = MODEL
 
     # Predict user character
     pred = pipeline.predict()
