@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/app/models
+    environment:
+      - DEVAN_API_HOSTNAME=0.0.0.0
+      - DEVAN_API_PORT=8080
+      - DEVAN_MODEL_V1_FILENAME=/app/models/Devanagari_model.joblib

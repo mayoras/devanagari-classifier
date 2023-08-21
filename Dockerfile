@@ -1,21 +1,13 @@
 FROM python:3.10.12
 
-WORKDIR /code
+WORKDIR /app
 
-COPY ./requirements.txt /code/requirements.txt
-
-# Set env variables
-ENV DEVAN_API_HOSTNAME="0.0.0.0"
-ENV DEVAN_API_PORT=80
-ENV DEVAN_MODEL_V1_FILENAME="/code/models/Devanagari_model.joblib"
+COPY ./requirements.txt /app/requirements.txt
 
 # Install dependencies
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 # Copy app files
-COPY ./devan /code/devan
+COPY ./devan /app/devan
 
-# Copy model file
-COPY ./models/Devanagari_model.joblib ${DEVAN_MODEL_V1_FILENAME}
-
-CMD uvicorn devan.main:app --proxy-headers --host "$DEVAN_API_HOSTNAME" --port "$DEVAN_API_PORT"
+CMD uvicorn devan.main:app --host $DEVAN_API_HOSTNAME --port $DEVAN_API_PORT
