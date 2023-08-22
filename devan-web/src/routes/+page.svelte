@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { darkTheme } from '../stores/theme';
+	import { PUBLIC_DEVAN_API_BASE_URL } from '$env/static/public';
 	import Canvas from '$lib/components/Canvas.svelte';
 	import Slider from '$lib/components/Slider.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Card from '$lib/components/Card.svelte';
-	import { DEVAN_API_URL } from '$lib/constants/api';
 	import { IMG_WIDTH, IMG_HEIGHT, DRAW_POINTER_SIZE } from '$lib/constants/image';
 	import {
 		DEFAULT_PENCIL_THICKNESS,
@@ -19,6 +19,8 @@
 	type PayloadImageProps = devan.image.PayloadImageProps;
 
 	const NUM_THICKNESS_MARKERS = 3;
+	const PREDICT_URL =
+		PUBLIC_DEVAN_API_BASE_URL + (PUBLIC_DEVAN_API_BASE_URL.endsWith('/') ? 'predict' : '/predict');
 
 	let canvas: Canvas;
 	let pencilThickness = DEFAULT_PENCIL_THICKNESS;
@@ -55,7 +57,7 @@
 
 	async function sendPayload(payload: PayloadImageProps[]) {
 		try {
-			const response = await fetch(DEVAN_API_URL, {
+			const response = await fetch(PREDICT_URL, {
 				method: 'POST',
 				mode: 'cors',
 				headers: {
