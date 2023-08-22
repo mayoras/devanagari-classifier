@@ -16,4 +16,4 @@ COPY ./devan /app/devan
 
 EXPOSE 8080
 
-CMD uvicorn devan.main:app --host $DEVAN_API_HOSTNAME --port $DEVAN_API_PORT
+CMD uvicorn devan.main:app --proxy-headers --host $DEVAN_API_HOSTNAME --port $DEVAN_API_PORT
