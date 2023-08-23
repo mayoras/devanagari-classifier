@@ -2,7 +2,7 @@ version: '3'
 
 services:
   api:
-    build: .
+    image: cezeitar/devan_api:latest
     container_name: devan-api
     volumes:
       - ./models:/app/models
