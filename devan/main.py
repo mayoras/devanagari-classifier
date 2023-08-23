@@ -8,7 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from devan.api.model import ImageBody
 from devan.api.image import parse_image
-from devan.constants.api import DEVAN_API_PORT, DEVAN_API_HOSTNAME, DEVAN_PROD_ENV
+from devan.constants.api import (
+    DEVAN_API_PORT,
+    DEVAN_API_HOSTNAME,
+    DEVAN_PROD_ENV,
+    DEVAN_CORS_ORIGIN,
+)
 from devan.constants.model import DEVAN_MODEL_FILENAME
 from devan.character import Character
 from devan.pipeline import Pipeline, TransformList
@@ -26,7 +31,7 @@ app = FastAPI()
 ### MIDDLEWARES ###
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[DEVAN_CORS_ORIGIN],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
