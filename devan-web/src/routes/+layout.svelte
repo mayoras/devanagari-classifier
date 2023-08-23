@@ -1,27 +1,24 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { darkTheme } from '../stores/theme';
-	import { waitForElement } from '$lib/utils/dom';
+	import { syncBodyStoreTheme, waitForElement } from '$lib/utils/dom';
+	import { browser } from '$app/environment';
 
 	let body: unknown;
 
 	onMount(async () => {
 		body = await waitForElement('body');
-		if (body) {
-			darkTheme.set((body as HTMLBodyElement).classList.contains('dark'));
+		if (body && browser) {
+			darkTheme.useLocalStorage();
+			syncBodyStoreTheme(body as HTMLBodyElement, $darkTheme);
 		}
 	});
 
 	function toggleTheme() {
 		if (body) {
-			if ($darkTheme) {
-				(body as HTMLBodyElement).classList.replace('dark', 'light');
-			} else {
-				(body as HTMLBodyElement).classList.replace('light', 'dark');
-			}
+			darkTheme.update(current => !current);
+			syncBodyStoreTheme(body as HTMLBodyElement, $darkTheme);
 		}
-
-		darkTheme.update(current => !current);
 	}
 </script>
 
