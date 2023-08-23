@@ -18,3 +18,8 @@ export function waitForElement(el: string) {
 		});
 	});
 }
+
+export function syncBodyStoreTheme(body: HTMLBodyElement, darkTheme: boolean) {
+	body.classList.remove('light', 'dark');
+	body.classList.add(darkTheme ? 'dark' : 'light');
+}
