@@ -50,12 +50,12 @@ jobs:
         run: pnpm i
         working-directory: devan-web/
 
-      - name: Lint code
-        run: pnpm run lint
-        working-directory: devan-web/
-
       - name: Format code
         run: pnpm run format
+        working-directory: devan-web/
+
+      - name: Lint code
+        run: pnpm run lint
         working-directory: devan-web/
 
       - name: Build and test
