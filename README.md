@@ -8,3 +8,4 @@ TODO:
 - Organize user images by id in requests/response -- **DONE**
 - Make UI for posterior prediction response -- **DONE**
 - Change square pointer for smooth pointer -- **DONE**
+- Make real README
