@@ -1,0 +1,65 @@
+name: devan CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  api-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install black
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Check format with black
+        run: |
+          black -v --check --diff --no-color --extend-exclude '/(\.ipynb)/' .
+      - name: Test with unittest
+        run: |
+          python -m unittest
+
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm i
+        working-directory: devan-web/
+
+      - name: Lint code
+        run: pnpm run lint
+        working-directory: devan-web/
+
+      - name: Format code
+        run: pnpm run format
+        working-directory: devan-web/
+
+      - name: Build and test
+        run: |
+          pnpm run test
+          pnpm run build
+        working-directory: devan-web/
