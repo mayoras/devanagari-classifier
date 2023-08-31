@@ -43,6 +43,20 @@ jobs:
         with:
           node-version: 18
 
+      - name: Setup environment variables
+        env:
+          PUBLIC_DEVAN_API_BASE_URL: ${{ vars.PUBLIC_DEVAN_API_BASE_URL }}
+        run: |
+          touch .env
+          echo PUBLIC_DEVAN_API_BASE_URL="$PUBLIC_DEVAN_API_BASE_URL" >> .env
+
+          echo "cat .env"
+          cat .env
+
+          echo "ls -a ."
+          ls -a .
+        working-directory: devan-web/
+
       - name: Install PNPM
         run: npm install -g pnpm
 
